@@ -25,11 +25,13 @@ namespace Re
 	{
 		m_prevColor = m_currentColor;
 		m_currentColor = color;
+		SDL_SetRenderDrawColor(m_renderer, m_currentColor.r, m_currentColor.g, m_currentColor.b, m_currentColor.a);
 	}
 
 	void WindowHandler::ReverseColor()
 	{
 		m_currentColor = m_prevColor;
+		SDL_SetRenderDrawColor(m_renderer, m_currentColor.r, m_currentColor.g, m_currentColor.b, m_currentColor.a);
 	}
 
 	SDL_Window* WindowHandler::GetWindow() const

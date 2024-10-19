@@ -4,11 +4,13 @@ set_languages("c++20")
 includes("xmake/**.lua")
 
 add_requires("libsdl")
+add_defines("SDL_MAIN_HANDLED")
 
 modules = {
     Renderer = {
         Packages = {"libsdl"},
         PublicPkg = {"libsdl"},
+        Defines = {"SDL_MAIN_HANDLED"}
     }
 }
 
@@ -31,6 +33,10 @@ for name, module in pairs(modules) do
             for _, pkg in ipairs(module.PublicPkg) do
                 add_packages(pkg, {public = true})
             end
+        end
+
+        if module.Defines then
+            add_defines(table.unpack(module.Defines))
         end
 
         add_files("src/RealEngine/" .. name .. "/**.cpp")
