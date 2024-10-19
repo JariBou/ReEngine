@@ -8,8 +8,11 @@ add_requires("libsdl")
 modules = {
     Renderer = {
         Packages = {"libsdl"},
+        PublicPkg = {"libsdl"},
     }
 }
+
+add_includedirs("include")
 
 for name, module in pairs(modules) do
 
@@ -18,10 +21,16 @@ for name, module in pairs(modules) do
         set_kind("shared")
 
         add_includedirs("src")
-        add_includedirs("include")
+        add_defines("RE_COMPILE")
 
         if module.Packages then
             add_packages(table.unpack(module.Packages))
+        end
+
+        if module.PublicPkg then
+            for _, pkg in ipairs(module.PublicPkg) do
+                add_packages(pkg, {public = true})
+            end
         end
 
         add_files("src/RealEngine/" .. name .. "/**.cpp")

@@ -56,6 +56,7 @@ on_run(function ()
 		CLASS_PATH = classPath,
 		MODULE_NAME = module .. "/",
 		NAMESPACE = namespace,
+		API = namespace:upper() .. "_" .. module:upper() .. "_API",
 	}
 
 	if not module then
@@ -79,9 +80,11 @@ end)
 headerTemplate = [[
 #pragma once
 
+#include <%PROJECT_NAME%/%MODULE_NAME%Export.h>
+
 namespace %NAMESPACE%
 {
-	class %CLASS_NAME%
+	class %API% %CLASS_NAME%
 	{
 		public:
 			%CLASS_NAME%() = default;
