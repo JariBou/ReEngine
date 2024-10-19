@@ -35,6 +35,7 @@ namespace Re
 
 			void DestroyWindow();
 			
+			void RenderClear() const;
 			void UpdateRenderer() const;
 			
 			void SetTempColor(RGBA color);

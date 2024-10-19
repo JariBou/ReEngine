@@ -16,6 +16,11 @@ namespace Re
 		SDL_DestroyWindow(m_window);
 	}
 
+	void WindowHandler::RenderClear() const
+	{
+		SDL_RenderClear(m_renderer);
+	}
+
 	void WindowHandler::UpdateRenderer() const
 	{
 		SDL_RenderPresent(m_renderer);
