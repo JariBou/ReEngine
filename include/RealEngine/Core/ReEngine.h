@@ -2,6 +2,8 @@
 
 #include <RealEngine/Core/Export.h>
 #include <RealEngine/Renderer/WindowHandler.h>
+//#include <RealEngine/Core/Registry.h>
+
 
 namespace Re
 {
@@ -24,5 +26,6 @@ namespace Re
 
 		private:
 			WindowHandler* m_windowHandler = nullptr;
+			//Registry<ITickable> m_tickablesRegistry;
 	};
 }

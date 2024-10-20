@@ -1,10 +1,13 @@
 #pragma once
 
 #include <RealEngine/Core/Export.h>
+#include <vector>
 
 namespace Re
 {
-	template<class T>
+	class IRegistryItem;
+	
+	template<class T=IRegistryItem>
 	class RE_CORE_API Registry
 	{
 		public:
@@ -17,16 +20,53 @@ namespace Re
 			Registry& operator=(Registry&&) = delete;
 
 			void Register(T* pItem);
+		
+			void Unregister(IRegistryItem* registryItem);
 
 		private:
 			std::vector<T> items;
-
 	};
 
-	template<class T>
-	inline void Registry<T>::Register(T* pItem)
+	enum class RegistryType {
+		Tickables,
+
+	};
+	
+	class RE_CORE_API IRegistryItem
 	{
-		items.push_back(pItem);
-	}
+	public:
+		IRegistryItem(RegistryType registryType) : m_registryType(registryType) {}
+
+		IRegistryItem(const IRegistryItem& old) {
+			m_registryType = old.m_registryType;
+			m_registry = old.m_registry;
+		}
+		IRegistryItem(IRegistryItem&& old) = delete;
+
+		~IRegistryItem()
+		{
+			if (m_registry != nullptr) m_registry->Unregister(this);
+		}
+
+		//IRegistryItem& operator=(const IRegistryItem&) = delete;
+		IRegistryItem& operator=(IRegistryItem&& old){
+			m_registryType = old.m_registryType;
+			m_registry = old.m_registry;
+			return *this;
+		}
+
+		bool operator==(IRegistryItem other) { return true; }
+
+		void OnRegister(Registry<>* registry)
+		{
+			m_registry = registry;
+		}
+
+	private:
+		RegistryType m_registryType;
+		Registry<>* m_registry = nullptr;
+	};
 
 }
+
+#include "Registry.inl"
