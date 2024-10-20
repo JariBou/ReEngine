@@ -8,10 +8,14 @@ add_defines("SDL_MAIN_HANDLED")
 
 modules = {
     Renderer = {
-        Packages = {"libsdl"},
+        --Packages = {"libsdl"},
         PublicPkg = {"libsdl"},
         Defines = {"SDL_MAIN_HANDLED"}
+    },
+    Core = {
+        Deps = {"RealEngineRenderer"},
     }
+
 }
 
 add_includedirs("include")
@@ -24,6 +28,10 @@ for name, module in pairs(modules) do
 
         add_includedirs("src")
         add_defines("RE_COMPILE")
+
+        if module.Deps then
+            add_deps(table.unpack(module.Deps))
+        end
 
         if module.Packages then
             add_packages(table.unpack(module.Packages))

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <RealEngine/Renderer/WindowHandler.h>
 #include <SDL2/SDL.h>
+#include <RealEngine/Core/ReEngine.h>
 
 int main(int argc, char** argv) {
     
@@ -8,7 +9,11 @@ int main(int argc, char** argv) {
     wi.width = 680;
     wi.height = 480;
 
-    Re::WindowHandler window (wi);
+	Re::ReEngine engine;
+	Re::WindowHandler* window = engine.InitWindow(wi);
+	Re::Renderer* renderer = engine.GetRenderer();
+
+    //Re::WindowHandler window (wi);
 	//SDL_Window* m_window = SDL_CreateWindow("Title", wi.posX, wi.posY, wi.width, wi.height, SDL_WINDOW_SHOWN);
 	//SDL_Renderer* m_renderer = SDL_CreateRenderer(m_window, 0, NULL);
 	int mx0 = 0;
@@ -21,7 +26,7 @@ int main(int argc, char** argv) {
 		//SDL_RenderClear(m_renderer);
 
         SDL_Event event;
-		while (window.PollEvent(event)) {
+		while (window->PollEvent(event)) {
 			switch (event.type)
 			{
 			case SDL_QUIT:
@@ -35,7 +40,7 @@ int main(int argc, char** argv) {
 				mx1 = event.button.x;
 				my1 = event.button.y;
 
-				window.SetColor(Re::RGBA(0, 0, 255, 255));
+				renderer->SetColor(Re::RGBA(0, 0, 255, 255));
 				//SDL_SetRenderDrawColor(window->GetRenderer(), 0, 0, 255, 255);
 				SDL_Rect r{};
 				r.x = mx0;
@@ -44,7 +49,7 @@ int main(int argc, char** argv) {
 				r.h = my1 - my0;
 
 				//SDL_RenderFillRect(window->GetRenderer(), &r);
-				window.RenderRect(r);
+				renderer->RenderRect(r);
 				break;
 			}
 		}
@@ -52,12 +57,12 @@ int main(int argc, char** argv) {
 
 
 		//SDL_RenderPresent(window->GetRenderer());
-		window.UpdateRenderer();
+		renderer->UpdateRenderer();
 
         SDL_Delay(1000 / 60);
     }
 
-	window.DestroyWindow();
+	window->DestroyWindow();
 	//SDL_DestroyWindow(m_window);
     // delete window;
 

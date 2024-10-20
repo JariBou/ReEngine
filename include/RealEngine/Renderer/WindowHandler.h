@@ -1,12 +1,9 @@
 #pragma once
 
 #include <SDL2/SDL_video.h>
+#include <SDL2/SDL_events.h>
 #include <RealEngine/Renderer/Export.h>
-
-class SDL_Window;
-class SDL_Renderer;
-typedef union SDL_Event;
-class SDL_Rect;
+#include <RealEngine/Renderer/Renderer.h>
 
 namespace Re
 {
@@ -15,13 +12,6 @@ namespace Re
 		int height = 480;
 		int posX = SDL_WINDOWPOS_UNDEFINED;
 		int posY = SDL_WINDOWPOS_UNDEFINED;
-	};
-
-	struct RE_RENDERER_API RGBA {
-		int r = 0;
-		int g = 0;
-		int b = 0;
-		int a = 255;
 	};
 
 	class RE_RENDERER_API WindowHandler
@@ -36,27 +26,15 @@ namespace Re
 			WindowHandler& operator=(WindowHandler&&) = delete;
 
 			void DestroyWindow();
-			
-			void RenderClear() const;
-			void UpdateRenderer() const;
 
 			int PollEvent(SDL_Event& event);
-			
-			void SetColor(RGBA color);
-			void ReverseColor();
-
-			void RenderRect(SDL_Rect& rect);
-
-			RGBA GetCurrentColor() const;
 
 			SDL_Window* GetWindow() const;
-			SDL_Renderer* GetRenderer() const;
+			Renderer* GetRenderer() const;
 
 		private:
-			RGBA m_currentColor;
-			RGBA m_prevColor;
 			SDL_Window* m_window;
-			SDL_Renderer* m_renderer;
+			Renderer* m_renderer;
 	};
 	
 }
