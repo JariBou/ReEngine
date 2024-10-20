@@ -5,6 +5,8 @@
 
 class SDL_Window;
 class SDL_Renderer;
+typedef union SDL_Event;
+class SDL_Rect;
 
 namespace Re
 {
@@ -37,9 +39,13 @@ namespace Re
 			
 			void RenderClear() const;
 			void UpdateRenderer() const;
+
+			int PollEvent(SDL_Event& event);
 			
-			void SetTempColor(RGBA color);
+			void SetColor(RGBA color);
 			void ReverseColor();
+
+			void RenderRect(SDL_Rect& rect);
 
 			RGBA GetCurrentColor() const;
 

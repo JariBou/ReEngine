@@ -26,7 +26,12 @@ namespace Re
 		SDL_RenderPresent(m_renderer);
 	}
 
-	void WindowHandler::SetTempColor(RGBA color)
+	int WindowHandler::PollEvent(SDL_Event& event)
+	{
+		return SDL_PollEvent(&event);
+	}
+
+	void WindowHandler::SetColor(RGBA color)
 	{
 		m_prevColor = m_currentColor;
 		m_currentColor = color;
@@ -37,6 +42,11 @@ namespace Re
 	{
 		m_currentColor = m_prevColor;
 		SDL_SetRenderDrawColor(m_renderer, m_currentColor.r, m_currentColor.g, m_currentColor.b, m_currentColor.a);
+	}
+
+	void WindowHandler::RenderRect(SDL_Rect& rect)
+	{
+		SDL_RenderFillRect(m_renderer, &rect);
 	}
 
 	SDL_Window* WindowHandler::GetWindow() const
