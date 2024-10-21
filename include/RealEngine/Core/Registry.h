@@ -5,13 +5,12 @@
 
 namespace Re
 {
-	template<typename T>
-	concept C_RegistryItem = requires(T a)
-	{
-		{ std::hash<T>{}(a) } -> std::convertible_to<std::size_t>;
-	};
+	class IRegistryItem;
 
-	template<C_RegistryItem T>
+	template<class T, class U>
+	concept Derived = std::is_base_of<U, T>::value;
+
+	template<Derived<IRegistryItem> T = IRegistryItem>
 	class RE_CORE_API Registry
 	{
 		public:
@@ -23,8 +22,29 @@ namespace Re
 			Registry& operator=(const Registry&) = delete;
 			Registry& operator=(Registry&&) = delete;
 
+			void Register(T* item);
+			void Unregister(T* item);
+
 		private:
+			std::vector<T> m_items;
 	};
+
+	class IRegistryItem {
+	public:
+
+		void OnRegistered(Registry<>* registry) {
+			m_registry = registry;
+		}
+
+		~IRegistryItem() {
+			if (m_registry != nullptr) m_registry->Unregister(this);
+		}
+
+
+	private:
+		Registry<>* m_registry = nullptr;
+	};
+	
 }
 
 #include <RealEngine/Core/Registry.inl>
