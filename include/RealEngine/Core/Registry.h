@@ -5,9 +5,13 @@
 
 namespace Re
 {
-	class IRegistryItem;
-	
-	template<class T=IRegistryItem>
+	template<typename T>
+	concept C_RegistryItem = requires(T a)
+	{
+		{ std::hash<T>{}(a) } -> std::convertible_to<std::size_t>;
+	};
+
+	template<C_RegistryItem T>
 	class RE_CORE_API Registry
 	{
 		public:
@@ -19,54 +23,8 @@ namespace Re
 			Registry& operator=(const Registry&) = delete;
 			Registry& operator=(Registry&&) = delete;
 
-			void Register(T* pItem);
-		
-			void Unregister(IRegistryItem* registryItem);
-
 		private:
-			std::vector<T> items;
 	};
-
-	enum class RegistryType {
-		Tickables,
-
-	};
-	
-	class RE_CORE_API IRegistryItem
-	{
-	public:
-		IRegistryItem(RegistryType registryType) : m_registryType(registryType) {}
-
-		IRegistryItem(const IRegistryItem& old) {
-			m_registryType = old.m_registryType;
-			m_registry = old.m_registry;
-		}
-		IRegistryItem(IRegistryItem&& old) = delete;
-
-		~IRegistryItem()
-		{
-			if (m_registry != nullptr) m_registry->Unregister(this);
-		}
-
-		//IRegistryItem& operator=(const IRegistryItem&) = delete;
-		IRegistryItem& operator=(IRegistryItem&& old){
-			m_registryType = old.m_registryType;
-			m_registry = old.m_registry;
-			return *this;
-		}
-
-		bool operator==(IRegistryItem other) { return true; }
-
-		void OnRegister(Registry<>* registry)
-		{
-			m_registry = registry;
-		}
-
-	private:
-		RegistryType m_registryType;
-		Registry<>* m_registry = nullptr;
-	};
-
 }
 
-#include "Registry.inl"
+#include <RealEngine/Core/Registry.inl>

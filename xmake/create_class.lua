@@ -1,5 +1,5 @@
 -- defined at the end of the file
-local headerTemplate, sourceTemplate
+local headerTemplate, sourceTemplate, inlineTemplate
 
 local projectName = "RealEngine";
 local namespace = "Re";
@@ -14,6 +14,7 @@ set_menu({
 	{
 		-- Set k mode as key-only bool parameter
 		{nil, "nocpp", "k", nil, "If set, will not generate .cpp" },
+		{nil, "inl", "k", nil, "If set, will generate .inl file" },
 		{nil, "name", "v", nil, "Class name" },
 		{"m", "module", "v", nil, "The module for the class"},
 	}
@@ -39,12 +40,20 @@ on_run(function ()
 		if not option.get("nocpp") then
 			table.insert(files, { TargetPath = path.join("src", projectName, classPath) .. ".cpp", Template = sourceTemplate })
 		end
+
+		if option.get("inl") then
+			table.insert(files, { TargetPath = path.join("include", projectName, classPath) .. ".inl", Template = inlineTemplate })
+		end
 	else
 		files = {
 			{ TargetPath = path.join("include", projectName, module, classPath) .. ".h", Template = headerTemplate },
 		}
 		if not option.get("nocpp") then
 			table.insert(files, { TargetPath = path.join("src", projectName, module, classPath) .. ".cpp", Template = sourceTemplate })
+		end
+
+		if option.get("inl") then
+			table.insert(files, { TargetPath = path.join("include", projectName, module, classPath) .. ".inl", Template = inlineTemplate })
 		end
 	end
 
@@ -98,6 +107,8 @@ namespace %NAMESPACE%
 		private:
 	};
 }
+	
+#include <%PROJECT_NAME%/%MODULE_NAME%%CLASS_PATH%.inl>
 ]]
 
 
@@ -106,5 +117,14 @@ sourceTemplate = [[
 
 namespace %NAMESPACE%
 {
+}
+]]
+
+inlineTemplate = [[
+#pragma once
+
+namespace %NAMESPACE%
+{
+	
 }
 ]]

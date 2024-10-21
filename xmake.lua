@@ -49,6 +49,7 @@ for name, module in pairs(modules) do
 
         add_files("src/RealEngine/" .. name .. "/**.cpp")
         add_headerfiles("include/(RealEngine/" .. name .. "/**.h)")
+        add_headerfiles("include/(RealEngine/" .. name .. "/**.inl)")
 
 
     end)
