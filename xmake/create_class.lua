@@ -8,7 +8,7 @@ task("create-class")
 
 set_menu({
 	-- Settings menu usage
-	usage = "xmake create-class [options] name",
+	usage = "xmake create-class [options] name module-name",
 	description = "Helper for class creation",
 	options =
 	{
@@ -66,10 +66,15 @@ on_run(function ()
 		MODULE_NAME = module .. "/",
 		NAMESPACE = namespace,
 		API = namespace:upper() .. "_" .. module:upper() .. "_API",
+		INLINE_INCLUDE = "",
 	}
 
 	if not module then
 		replacements.MODULE_NAME = ""
+	end
+
+	if option.get("inl") then
+		replacements.INLINE_INCLUDE = "#include <%PROJECT_NAME%/%MODULE_NAME%%CLASS_PATH%.inl>"
 	end
 
 	for _, file in pairs(files) do
@@ -107,8 +112,8 @@ namespace %NAMESPACE%
 		private:
 	};
 }
-	
-#include <%PROJECT_NAME%/%MODULE_NAME%%CLASS_PATH%.inl>
+
+%INLINE_INCLUDE%
 ]]
 
 
