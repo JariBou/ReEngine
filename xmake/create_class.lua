@@ -74,7 +74,7 @@ on_run(function ()
 	end
 
 	if option.get("inl") then
-		replacements.INLINE_INCLUDE = "#include <%PROJECT_NAME%/%MODULE_NAME%%CLASS_PATH%.inl>"
+		replacements.INLINE_INCLUDE = "#include <" .. projectName .. "/" .. replacements.MODULE_NAME .. classPath .. ".inl>"
 	end
 
 	for _, file in pairs(files) do

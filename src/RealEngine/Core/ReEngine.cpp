@@ -1,7 +1,13 @@
 #include <RealEngine/Core/ReEngine.h>
+#include <RealEngine/Core/World.h>
 
 namespace Re
 {
+	ReEngine::ReEngine()
+	{
+		m_world = new World();
+	}
+
 	WindowHandler* ReEngine::InitWindow(WindowInfo wi)
 	{
 		m_windowHandler = new WindowHandler(wi);
@@ -12,6 +18,11 @@ namespace Re
 	{
 		if (m_windowHandler == nullptr) return nullptr;
 		return m_windowHandler->GetRenderer();
+	}
+
+	World* ReEngine::GetWorld()
+	{
+		return m_world;
 	}
 
 	void ReEngine::Update()

@@ -6,10 +6,12 @@
 
 namespace Re
 {
+	class World;
+
 	class RE_CORE_API ReEngine
 	{
 		public:
-			ReEngine() = default;
+			ReEngine();
 			ReEngine(const ReEngine&) = delete;
 			ReEngine(ReEngine&&) = delete;
 			~ReEngine() = default;
@@ -20,10 +22,14 @@ namespace Re
 			WindowHandler* InitWindow(WindowInfo wi);
 			Renderer* GetRenderer();
 
+			World* GetWorld();
+
 			void Update();
 			void PhysicsUpdate();
 
 		private:
 			WindowHandler* m_windowHandler = nullptr;
+
+			World* m_world;
 	};
 }

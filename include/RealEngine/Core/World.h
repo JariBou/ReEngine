@@ -1,9 +1,12 @@
 #pragma once
 
 #include <RealEngine/Core/Export.h>
+#include <vector>
 
 namespace Re
 {
+	class ReObject;
+
 	class RE_CORE_API World
 	{
 		public:
@@ -16,7 +19,8 @@ namespace Re
 			World& operator=(World&&) = delete;
 
 		private:
+			std::vector<ReObject*> m_objects;
 	};
 }
 
-
+#include <RealEngine/Core/World.inl>
