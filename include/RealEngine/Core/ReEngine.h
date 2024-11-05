@@ -2,11 +2,11 @@
 
 #include <RealEngine/Core/Export.h>
 #include <RealEngine/Renderer/WindowHandler.h>
+#include <RealEngine/Core/World.h>
 
 
 namespace Re
 {
-	class World;
 
 	class RE_CORE_API ReEngine
 	{
@@ -22,7 +22,9 @@ namespace Re
 			WindowHandler* InitWindow(WindowInfo wi);
 			Renderer* GetRenderer();
 
-			World* GetWorld();
+			inline World* GetWorld();
+
+			void Tick();
 
 			void Update();
 			void PhysicsUpdate();

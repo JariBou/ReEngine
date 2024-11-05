@@ -20,6 +20,13 @@ namespace Re
 		return m_windowHandler->GetRenderer();
 	}
 
+	void ReEngine::Tick()
+	{
+		GetWorld()->PhysicsTick();
+		GetWorld()->Tick();
+		GetWorld()->RenderTick(); // Maybe should be separated idk
+	}
+
 	World* ReEngine::GetWorld()
 	{
 		return m_world;

@@ -1,7 +1,27 @@
 #include <iostream>
 #include <RealEngine/Renderer/WindowHandler.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_keycode.h>
 #include <RealEngine/Core/ReEngine.h>
+#include <RealEngine/Core/ReObject.h>
+
+
+class Tamere : public Re::ReObject {
+
+public:
+
+	Tamere(Re::ReEngine* engine) : ReObject(engine) {
+	}
+
+	void Print() {
+		std::cout << "tamere" << std::endl;
+	}
+
+	void Tick() override {
+		Print();
+	}
+};
+
 
 int main(int argc, char** argv) {
     
@@ -21,6 +41,11 @@ int main(int argc, char** argv) {
 	int mx1 = 0;
 	int my1 = 0;
 
+	std::shared_ptr<Tamere> t;
+	std::weak_ptr<Tamere> t;
+
+	Tamere* pTamere = engine.GetWorld()->InstantiateObject<Tamere>();
+
     bool close = false;
     while (!close) {
 		//SDL_RenderClear(m_renderer);
@@ -35,6 +60,11 @@ int main(int argc, char** argv) {
 			case SDL_MOUSEBUTTONDOWN:
 				mx0 = event.button.x;
 				my0 = event.button.y;
+				break;
+			case SDL_KEYDOWN:
+				if (event.key.type == SDLK_a) {
+					delete pTamere;
+				}
 				break;
 			case SDL_MOUSEBUTTONUP:
 				mx1 = event.button.x;
@@ -51,12 +81,14 @@ int main(int argc, char** argv) {
 				//SDL_RenderFillRect(window->GetRenderer(), &r);
 				renderer->RenderRect(r);
 				break;
+			
 			}
 		}
 
 
 
 		//SDL_RenderPresent(window->GetRenderer());
+		engine.Tick();
 		renderer->UpdateRenderer();
 
         SDL_Delay(1000 / 60);
