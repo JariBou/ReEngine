@@ -18,6 +18,11 @@ namespace Re
 		{
 			if (var->ShouldTick()) var->Tick();
 		}
+
+        // for (ReMasterPtr<ReObject>* var : m_objectsV2)
+        // {
+        //     if (var->Get()->ShouldTick()) var->Get()->Tick();
+        // }
         CollectGarbage();
     }
 
