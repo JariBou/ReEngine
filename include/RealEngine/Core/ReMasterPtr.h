@@ -6,20 +6,22 @@
 
 namespace Re
 {
-
 	template<class T>
-	class RE_CORE_API ReMasterPtr
+	class RePtr;
+	
+	template<class T>
+	class ReMasterPtr
 	{
 		public:
 			ReMasterPtr(T* ptr) : m_objPtr(ptr) {}
 			ReMasterPtr(const ReMasterPtr&) = delete;
-			ReMasterPtr(ReMasterPtr&& other);
+			ReMasterPtr(ReMasterPtr&& other) noexcept;
 			~ReMasterPtr();
 
 			T* Get();
 
 			ReMasterPtr& operator=(const ReMasterPtr&) = delete;
-			ReMasterPtr& operator=(ReMasterPtr&& other);
+			ReMasterPtr& operator=(ReMasterPtr&& other) noexcept;
 
 			T* operator-> ()
 			{
@@ -28,7 +30,7 @@ namespace Re
 
 		private:
 			T* m_objPtr;
-			std::vector<class RePtr<T>*> m_referencingObjects;
+			std::vector<RePtr<T>*> m_referencingObjects;
 
 			friend class RePtr<T>;
 	};

@@ -42,7 +42,7 @@ int main(int argc, char** argv) {
 	int my1 = 0;
 
 	std::shared_ptr<Tamere> t;
-	std::weak_ptr<Tamere> t;
+	std::weak_ptr<Tamere> t2;
 
 	Tamere* pTamere = engine.GetWorld()->InstantiateObject<Tamere>();
 

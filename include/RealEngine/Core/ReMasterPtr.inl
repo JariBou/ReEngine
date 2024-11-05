@@ -3,28 +3,32 @@
 namespace Re
 {
 	template<class T>
-	inline T* Re::ReMasterPtr<T>::Get()
+	T* ReMasterPtr<T>::Get()
 	{
 		return m_objPtr;
 	}
 
 	template <class T>
-	ReMasterPtr<T>& ReMasterPtr<T>::operator=(ReMasterPtr&& other)
+	ReMasterPtr<T>& ReMasterPtr<T>::operator=(ReMasterPtr&& other) noexcept
 	{
 		m_objPtr = other.m_objPtr;
 		m_referencingObjects = other.m_referencingObjects;
+		other.m_objPtr = nullptr;
+		other.m_referencingObjects.clear();
 		return *this;
 	}
 
 	template<class T>
-	inline Re::ReMasterPtr<T>::ReMasterPtr(ReMasterPtr&& other) : m_objPtr(other.m_objPtr), m_referencingObjects(other.m_referencingObjects)
+	ReMasterPtr<T>::ReMasterPtr(ReMasterPtr&& other) noexcept : m_objPtr(other.m_objPtr), m_referencingObjects(other.m_referencingObjects)
 	{
-		
+		other.m_objPtr = nullptr;
+		other.m_referencingObjects.clear();
 	}
 
 	template <class T>
 	ReMasterPtr<T>::~ReMasterPtr()
 	{
+		if (m_objPtr == nullptr) return;
 		for (RePtr<T>* element : m_referencingObjects)
 		{
 			element->Invalidate();

@@ -9,10 +9,8 @@ namespace Re
 	class ReObject;
 
 	template<typename T, typename U>
-	concept Derived = std::is_base_of<U, T>::value;
-
+	concept Derived = std::is_base_of_v<U, T>;
 	
-
 	class RE_CORE_API World
 	{
 		public:

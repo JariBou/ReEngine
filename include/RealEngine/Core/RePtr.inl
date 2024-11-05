@@ -1,8 +1,5 @@
 #pragma once
 
-#include "RePtr.h"
-#include "ReMasterPtr.h"
-
 namespace Re
 {
 	//template<class T>
@@ -13,10 +10,10 @@ namespace Re
 	//}
 
 	template<class T>
-	inline RePtr<T>::RePtr(const ReMasterPtr<T>& ptrHandler)
+	inline RePtr<T>::RePtr(const ReMasterPtr<T>& ptrMaster)
 	{
-		m_objPtr = ptrHandler.m_objPtr;
-		ptrHandler.m_referencingObjects.push_back(this);
+		m_objPtr = ptrMaster.m_objPtr;
+		ptrMaster.m_referencingObjects.push_back(this);
 	}
 
 	template<class T>

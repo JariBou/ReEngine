@@ -8,7 +8,7 @@ namespace Re
 	class ReMasterPtr;
 
 	template<class T>
-	class RE_CORE_API RePtr
+	class RePtr
 	{
 		public:
 			RePtr() = delete;
