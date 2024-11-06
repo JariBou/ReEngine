@@ -6,9 +6,13 @@
 
 namespace Re
 {
+	class ReMasterPtrBase {
+		virtual void Register(RePtrBase* item) const = 0;
+		virtual void Unregister(RePtrBase* item) const = 0;
+	};
 	
 	template<class T>
-	class ReMasterPtr
+	class ReMasterPtr : public ReMasterPtrBase
 	{
 		public:
 			ReMasterPtr();
@@ -36,8 +40,8 @@ namespace Re
 			T* m_objPtr;
 			mutable std::vector<RePtrBase*> m_referencingObjects;
 
-			void Register(RePtrBase* item) const;
-			void Unregister(RePtrBase* item) const;
+			void Register(RePtrBase* item) const override;
+			void Unregister(RePtrBase* item) const override;
 
 		friend class RePtr<T>;
 

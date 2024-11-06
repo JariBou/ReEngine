@@ -42,6 +42,7 @@ int main(int argc, char** argv) {
 	int my1 = 0;
 
 	Re::RePtr<Tamere> pTamere = engine.GetWorld()->InstantiateObject<Tamere>();
+	Re::RePtr<Tamere> pTamere2 = Re::RePtr<Tamere>(pTamere);
 
     bool close = false;
     while (!close) {

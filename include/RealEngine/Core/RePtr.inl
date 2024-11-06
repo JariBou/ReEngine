@@ -26,8 +26,9 @@ namespace Re
 	template<std::derived_from<T> U>
 	inline Re::RePtr<T>::RePtr(const RePtr<U>& other)
 	{
-		m_objPtr = other->m_objPtr;
-		m_masterPtr = other->ptrMaster;
+		m_objPtr = other.m_objPtr;
+		m_masterPtr = other.ptrMaster;
+		if (m_masterPtr == nullptr) return;
 		m_masterPtr->Register(this);
 	}
 
@@ -35,8 +36,18 @@ namespace Re
 	template<std::derived_from<T> U>
 	inline RePtr<T>::RePtr(RePtr<U>&& other)
 	{
-		m_objPtr = other->m_objPtr;
-		m_masterPtr = other->ptrMaster;
+		m_objPtr = other.m_objPtr;
+		m_masterPtr = other.m_masterPtr;
+		if (m_masterPtr == nullptr) return;
+		m_masterPtr->Register(this);
+	}
+
+	template <class T>
+	RePtr<T>::RePtr(const RePtr& other)
+	{
+		m_objPtr = other.m_objPtr;
+		m_masterPtr = other.m_masterPtr;
+		if (m_masterPtr == nullptr) return;
 		m_masterPtr->Register(this);
 	}
 
@@ -45,6 +56,7 @@ namespace Re
 	{
 		m_masterPtr = &ptrMaster;
 		m_objPtr = ptrMaster.m_objPtr;
+		if (m_masterPtr == nullptr) return;
 		m_masterPtr->Register(this);
 	}
 

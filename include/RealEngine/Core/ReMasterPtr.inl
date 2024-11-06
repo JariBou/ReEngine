@@ -1,4 +1,3 @@
-#include "ReMasterPtr.h"
 #pragma once
 
 namespace Re
@@ -18,7 +17,7 @@ namespace Re
 	template <class T>
 	void ReMasterPtr<T>::Unregister(RePtrBase* item) const
 	{
-		auto iterator = std::find(m_referencingObjects.begin(), m_referencingObjects.end(), item);
+		auto iterator = std::ranges::find(m_referencingObjects, item);
 		if (iterator == m_referencingObjects.end()) return;
 		
 		m_referencingObjects.erase(iterator);
@@ -44,6 +43,10 @@ namespace Re
 	ReMasterPtr<T>::ReMasterPtr(ReMasterPtr&& other) noexcept : m_objPtr(other.m_objPtr), m_referencingObjects(std::move(other.m_referencingObjects))
 	{
 		other.m_objPtr = nullptr;
+		for (RePtrBase* element : m_referencingObjects)
+		{
+			element->;
+		}
 		other.m_referencingObjects.clear();
 	}
 
