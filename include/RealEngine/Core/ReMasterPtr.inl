@@ -1,3 +1,4 @@
+#include "ReMasterPtr.h"
 #pragma once
 
 namespace Re
@@ -19,7 +20,7 @@ namespace Re
 	}
 
 	template<class T>
-	ReMasterPtr<T>::ReMasterPtr(ReMasterPtr&& other) noexcept : m_objPtr(other.m_objPtr), m_referencingObjects(other.m_referencingObjects)
+	ReMasterPtr<T>::ReMasterPtr(ReMasterPtr&& other) noexcept : m_objPtr(other.m_objPtr), m_referencingObjects(std::move(other.m_referencingObjects))
 	{
 		other.m_objPtr = nullptr;
 		other.m_referencingObjects.clear();
@@ -35,5 +36,26 @@ namespace Re
 		}
 		
 		delete m_objPtr;
+	}
+
+	template<class T>
+	template<std::derived_from<T> U>
+	inline ReMasterPtr<T>::ReMasterPtr(ReMasterPtr<U>& other) : m_objPtr(other.m_objPtr)
+	{
+		other.m_objPtr = nullptr;
+		for (RePtr<U>* var : other.m_referencingObjects)
+		{
+			
+			m_referencingObjects.push_back(var);
+		}
+		other.m_referencingObjects.clear();
+	}
+
+	template<class T>
+	template<std::derived_from<T> U>
+	inline ReMasterPtr<T>::ReMasterPtr(ReMasterPtr<U>&& other) : m_objPtr(other.m_objPtr), m_referencingObjects(std::move(other.m_referencingObjects))
+	{
+		other.m_objPtr = nullptr;
+		other.m_referencingObjects.clear();
 	}
 }

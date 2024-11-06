@@ -1,3 +1,4 @@
+#include "RePtr.h"
 #pragma once
 
 namespace Re
@@ -8,6 +9,20 @@ namespace Re
 	//	m_objPtr = other.m_objPtr;
 	//	
 	//}
+
+	template<class T>
+	template<std::derived_from<T> U>
+	inline Re::RePtr<T>::RePtr(RePtr<U>& other)
+	{
+		m_objPtr = other->m_objPtr;
+	}
+
+	template<class T>
+	template<std::derived_from<T> U>
+	inline RePtr<T>::RePtr(RePtr<U>&& other)
+	{
+		m_objPtr = other->m_objPtr;
+	}
 
 	template<class T>
 	inline RePtr<T>::RePtr(const ReMasterPtr<T>& ptrMaster)

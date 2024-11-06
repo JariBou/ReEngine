@@ -6,8 +6,6 @@
 
 namespace Re
 {
-	template<class T>
-	class RePtr;
 	
 	template<class T>
 	class ReMasterPtr
@@ -17,6 +15,12 @@ namespace Re
 			ReMasterPtr(const ReMasterPtr&) = delete;
 			ReMasterPtr(ReMasterPtr&& other) noexcept;
 			~ReMasterPtr();
+
+			template<std::derived_from<T> U>
+			ReMasterPtr(ReMasterPtr<U>& other);
+
+			template<std::derived_from<T> U>
+			ReMasterPtr(ReMasterPtr<U>&& other);
 
 			T* Get();
 
@@ -32,8 +36,13 @@ namespace Re
 			T* m_objPtr;
 			std::vector<RePtr<T>*> m_referencingObjects;
 
-			friend class RePtr<T>;
+		friend class RePtr<T>;
+
+		template<typename U>
+		friend class ReMasterPtr;
 	};
+
+
 }
 
 #include <RealEngine/Core/ReMasterPtr.inl>

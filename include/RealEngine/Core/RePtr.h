@@ -17,6 +17,12 @@ namespace Re
 			RePtr(RePtr&&) = delete;
 			~RePtr() = delete;
 
+			template<std::derived_from<T> U>
+			RePtr(RePtr<U>& other);
+
+			template<std::derived_from<T> U>
+			RePtr(RePtr<U>&& other);
+
 			T* Get();
 			void Invalidate();
 
