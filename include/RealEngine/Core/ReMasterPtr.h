@@ -11,7 +11,7 @@ namespace Re
 	class ReMasterPtr
 	{
 		public:
-			ReMasterPtr(T* ptr) : m_objPtr(ptr) {}
+			ReMasterPtr();
 			ReMasterPtr(const ReMasterPtr&) = delete;
 			ReMasterPtr(ReMasterPtr&& other) noexcept;
 			~ReMasterPtr();
@@ -34,7 +34,10 @@ namespace Re
 
 		private:
 			T* m_objPtr;
-			std::vector<RePtr<T>*> m_referencingObjects;
+			mutable std::vector<RePtrBase*> m_referencingObjects;
+
+			void Register(RePtrBase* item) const;
+			void Unregister(RePtrBase* item) const;
 
 		friend class RePtr<T>;
 

@@ -27,7 +27,7 @@ namespace Re
 			void CollectGarbage();
 
 			template<Derived<ReObject> T>
-			T* InstantiateObject();
+			RePtr<T> InstantiateObject();
 
 			World& operator=(const World&) = delete;
 			World& operator=(World&&) = delete;

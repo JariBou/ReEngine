@@ -41,10 +41,7 @@ int main(int argc, char** argv) {
 	int mx1 = 0;
 	int my1 = 0;
 
-	std::shared_ptr<Tamere> t;
-	std::weak_ptr<Tamere> t2;
-
-	Tamere* pTamere = engine.GetWorld()->InstantiateObject<Tamere>();
+	Re::RePtr<Tamere> pTamere = engine.GetWorld()->InstantiateObject<Tamere>();
 
     bool close = false;
     while (!close) {
@@ -63,7 +60,7 @@ int main(int argc, char** argv) {
 				break;
 			case SDL_KEYDOWN:
 				if (event.key.type == SDLK_a) {
-					delete pTamere;
+					//delete pTamere;
 				}
 				break;
 			case SDL_MOUSEBUTTONUP:
