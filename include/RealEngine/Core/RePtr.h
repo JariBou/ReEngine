@@ -7,12 +7,14 @@ namespace Re
 	template<class T>
 	class ReMasterPtr;
 
+	class ReMasterPtrBase;
+
 
 	class RePtrBase {
 	public:
 		virtual void Invalidate() = 0;
 
-		virtual void PassNewMaster(ReMasterPtr* master) = 0;
+		//virtual void PassNewMaster(ReMasterPtrBase* master) = 0;
 	};
 
 	template<class T>
@@ -36,6 +38,10 @@ namespace Re
 
 			RePtr& operator=(const RePtr& other) = delete;
 			RePtr& operator=(RePtr&&) = delete;
+
+			void PassNewMaster(ReMasterPtrBase* master) {
+				m_masterPtr = ReMasterPtr<T>(master);
+			}
 
 			T* operator-> ()
 			{

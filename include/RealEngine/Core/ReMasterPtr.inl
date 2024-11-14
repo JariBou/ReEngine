@@ -45,7 +45,10 @@ namespace Re
 		other.m_objPtr = nullptr;
 		for (RePtrBase* element : m_referencingObjects)
 		{
-			element->;
+			// Does not work FFS
+			RePtr<T>* el = RePtr<T>(element);
+			el->PassNewMaster(this);
+			//element->PassNewMaster(this);
 		}
 		other.m_referencingObjects.clear();
 	}
