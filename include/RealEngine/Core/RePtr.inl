@@ -27,7 +27,7 @@ namespace Re
 	inline Re::RePtr<T>::RePtr(const RePtr<U>& other)
 	{
 		m_objPtr = other.m_objPtr;
-		m_masterPtr = other.ptrMaster;
+		m_masterPtr = other.m_masterPtr;
 		if (m_masterPtr == nullptr) return;
 		m_masterPtr->Register(this);
 	}
@@ -71,5 +71,24 @@ namespace Re
 	{
 		m_objPtr = nullptr;
 		m_masterPtr = nullptr;
+		std::cout << "Invalidating RePtr" << std::endl;
+	}
+
+	template<class T>
+	inline RePtr<T>& RePtr<T>::operator=(const RePtr& other)
+	{
+		m_objPtr = other.m_objPtr;
+		m_masterPtr = other.m_masterPtr;
+		if (m_masterPtr == nullptr) return;
+		m_masterPtr->Register(this);
+	}
+
+	template<class T>
+	inline RePtr<T>& RePtr<T>::operator=(RePtr&& other)
+	{
+		m_objPtr = other.m_objPtr;
+		m_masterPtr = other.m_masterPtr;
+		if (m_masterPtr == nullptr) return;
+		m_masterPtr->Register(this);
 	}
 }

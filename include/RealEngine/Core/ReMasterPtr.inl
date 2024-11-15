@@ -43,13 +43,7 @@ namespace Re
 	ReMasterPtr<T>::ReMasterPtr(ReMasterPtr&& other) noexcept : m_objPtr(other.m_objPtr), m_referencingObjects(std::move(other.m_referencingObjects))
 	{
 		other.m_objPtr = nullptr;
-		for (RePtrBase* element : m_referencingObjects)
-		{
-			// Does not work FFS
-			RePtr<T>* el = RePtr<T>(element);
-			el->PassNewMaster(this);
-			//element->PassNewMaster(this);
-		}
+	
 		other.m_referencingObjects.clear();
 	}
 

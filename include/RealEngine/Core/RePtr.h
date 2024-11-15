@@ -36,12 +36,9 @@ namespace Re
 			T* Get();
 			virtual void Invalidate() override;
 
-			RePtr& operator=(const RePtr& other) = delete;
-			RePtr& operator=(RePtr&&) = delete;
+			RePtr<T>& operator=(const RePtr& other);
 
-			void PassNewMaster(ReMasterPtrBase* master) {
-				m_masterPtr = ReMasterPtr<T>(master);
-			}
+			RePtr<T>& operator=(RePtr&& other);
 
 			T* operator-> ()
 			{

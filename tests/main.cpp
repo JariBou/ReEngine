@@ -11,6 +11,7 @@ class Tamere : public Re::ReObject {
 public:
 
 	Tamere(Re::ReEngine* engine) : ReObject(engine) {
+		SetShouldTick(true);
 	}
 
 	void Print() {
@@ -41,8 +42,13 @@ int main(int argc, char** argv) {
 	int mx1 = 0;
 	int my1 = 0;
 
+	// pTamere est bien initialisé
 	Re::RePtr<Tamere> pTamere = engine.GetWorld()->InstantiateObject<Tamere>();
+	// pTamere devient null, pTamere2 est bien initialisé???
 	Re::RePtr<Tamere> pTamere2 = Re::RePtr<Tamere>(pTamere);
+
+	// CA PRINT ALORS QUE C'EST NULL?????
+	pTamere->Print();
 
     bool close = false;
     while (!close) {
