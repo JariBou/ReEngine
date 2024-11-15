@@ -60,6 +60,15 @@ namespace Re
 		m_masterPtr->Register(this);
 	}
 
+	template <class T>
+	RePtr<T>::RePtr(const ReMasterPtr<T>* ptrMaster)
+	{
+		m_masterPtr = ptrMaster;
+		m_objPtr = ptrMaster->m_objPtr;
+		if (m_masterPtr == nullptr) return;
+		m_masterPtr->Register(this);
+	}
+
 	template<class T>
 	inline T* RePtr<T>::Get()
 	{
@@ -84,7 +93,7 @@ namespace Re
 	}
 
 	template<class T>
-	inline RePtr<T>& RePtr<T>::operator=(RePtr&& other)
+	inline RePtr<T>& RePtr<T>::operator=(RePtr&& other) noexcept
 	{
 		m_objPtr = other.m_objPtr;
 		m_masterPtr = other.m_masterPtr;

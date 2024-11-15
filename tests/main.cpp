@@ -42,12 +42,14 @@ int main(int argc, char** argv) {
 	int mx1 = 0;
 	int my1 = 0;
 
-	// pTamere est bien initialisé
+	// pTamere est bien initialisï¿½
 	Re::RePtr<Tamere> pTamere = engine.GetWorld()->InstantiateObject<Tamere>();
-	// pTamere devient null, pTamere2 est bien initialisé???
+	// pTamere devient null, pTamere2 est bien initialisï¿½???
+	// ok non alors le pb est dans InstantiateObject ou lors du return un ReMasterPtr est dÃ©truit et donc invalide les RePtr
 	Re::RePtr<Tamere> pTamere2 = Re::RePtr<Tamere>(pTamere);
 
 	// CA PRINT ALORS QUE C'EST NULL?????
+	// Ã§a explique tjrs pas Ã§a tho...
 	pTamere->Print();
 
     bool close = false;
