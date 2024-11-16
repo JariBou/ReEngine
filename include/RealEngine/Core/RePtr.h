@@ -1,34 +1,25 @@
 #pragma once
 
 #include <RealEngine/Core/Export.h>
+#include <RealEngine/Core/RePtrBases.h>
 
 namespace Re
 {
 	template<class T>
 	class ReMasterPtr;
 
-	// class ReMasterPtrBase;
-
-
-	class RePtrBase {
-	public:
-		
-		virtual void Invalidate() = 0;
-
-		//virtual void PassNewMaster(ReMasterPtrBase* master) = 0;
-	};
-
 	template<class T>
 	class RePtr : public RePtrBase
 	{
 		public:
 			RePtr() = delete;
+		
+			RePtr(RePtr& other);
 			RePtr(const RePtr& other);
 			RePtr(const ReMasterPtr<T>& ptrMaster);
-		// Hopefully TEMP ==========================
 			RePtr(const ReMasterPtr<T>* ptrMaster);
-		// =========================================
-			RePtr(RePtr&&) = delete;
+
+			RePtr(RePtr&& other) noexcept;
 			~RePtr();
 
 			template<std::derived_from<T> U>
@@ -38,20 +29,28 @@ namespace Re
 			RePtr(RePtr<U>&& other);
 
 			T* Get();
+		
+			bool IsValid();
+		
 			void Invalidate() override;
 
-			RePtr<T>& operator=(const RePtr& other);
+			RePtr& operator=(const RePtr& other);
 
-			RePtr<T>& operator=(RePtr&& other) noexcept;
+			RePtr& operator=(RePtr&& other) noexcept;
 
 			T* operator-> ()
 			{
 				return m_objPtr;
 			}
 
+			void PassNewMaster(ReMasterPtrBase* master) override;
+
 		private:
 			T* m_objPtr;
-			const ReMasterPtr<T>* m_masterPtr;
+			const ReMasterPtrBase* m_masterPtr;
+
+			template<typename U>
+			friend class RePtr;
 	};
 }
 

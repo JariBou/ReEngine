@@ -14,7 +14,7 @@ namespace Re
 	class RE_CORE_API World
 	{
 		public:
-			World() = default;
+			World();
 			World(const World&) = delete;
 			World(World&&) = delete;
 			~World() = default;
@@ -37,6 +37,9 @@ namespace Re
 			std::vector<ReMasterPtr<ReObject>> m_objectsV2;
 			std::vector<ReObject*> m_garbage;
 			std::vector<ReMasterPtr<ReObject>> m_garbageV2;
+
+			template<Derived<ReObject> T>
+			void AddObjectToWorld(ReMasterPtr<T>& item);
 	};
 	
 }

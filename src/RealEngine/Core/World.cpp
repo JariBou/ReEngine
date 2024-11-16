@@ -4,6 +4,11 @@
 
 namespace Re
 {
+    World::World()
+    {
+        m_objectsV2.resize(4);
+    }
+
     void World::PhysicsTick()
     {
     }

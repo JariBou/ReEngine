@@ -14,7 +14,7 @@ namespace Re
 
 			ReObject(const ReObject&) = delete;
 			ReObject(ReObject&&) = delete;
-			~ReObject();
+			virtual ~ReObject();
 
 			virtual void Tick();
 

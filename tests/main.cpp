@@ -19,7 +19,7 @@ public:
 	}
 
 	void Tick() override {
-		Print();
+		//Print();
 	}
 };
 
@@ -48,9 +48,13 @@ int main(int argc, char** argv) {
 	// ok non alors le pb est dans InstantiateObject ou lors du return un ReMasterPtr est détruit et donc invalide les RePtr
 	Re::RePtr<Tamere> pTamere2 = Re::RePtr<Tamere>(pTamere);
 
+	//Re::RePtr<Tamere> pTamere3 = engine.GetWorld()->InstantiateObject<Tamere>();
+	//Re::RePtr<Re::ReObject> pTamere4 = Re::RePtr(pTamere3);
+	
 	// CA PRINT ALORS QUE C'EST NULL?????
 	// ça explique tjrs pas ça tho...
-	pTamere->Print();
+	// Ok alors en fait c'est convertit en "extensions C#" avec le this en param donc tant que tu touches pas au truc c'est fine
+	if(pTamere.IsValid()) pTamere->Print();
 
     bool close = false;
     while (!close) {

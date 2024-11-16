@@ -1,30 +1,21 @@
+#pragma once
 #include <iostream>
 #include <ostream>
-
-#pragma once
 #include "RePtr.h"
-#include <iostream>
 
 namespace Re
 {
-	//template<class T>
-	//inline RePtr<T>::RePtr(const RePtr& other)
-	//{
-	//	m_objPtr = other.m_objPtr;
-	//	
-	//}
-
 	template <class T>
 	RePtr<T>::~RePtr()
 	{
-		std::cout << "Destroying RePtr" << std::endl;
+		std::cout << "Destroying RePtr" << "\n";
 		if (m_masterPtr == nullptr) return;
 		m_masterPtr->Unregister(this);
 	}
 
 	template<class T>
 	template<std::derived_from<T> U>
-	inline Re::RePtr<T>::RePtr(const RePtr<U>& other)
+	Re::RePtr<T>::RePtr(const RePtr<U>& other)
 	{
 		m_objPtr = other.m_objPtr;
 		m_masterPtr = other.m_masterPtr;
@@ -34,7 +25,16 @@ namespace Re
 
 	template<class T>
 	template<std::derived_from<T> U>
-	inline RePtr<T>::RePtr(RePtr<U>&& other)
+	RePtr<T>::RePtr(RePtr<U>&& other)
+	{
+		m_objPtr = other.m_objPtr;
+		m_masterPtr = other.m_masterPtr;
+		if (m_masterPtr == nullptr) return;
+		m_masterPtr->Register(this);
+	}
+
+	template <class T>
+	RePtr<T>::RePtr(RePtr& other)
 	{
 		m_objPtr = other.m_objPtr;
 		m_masterPtr = other.m_masterPtr;
@@ -52,7 +52,7 @@ namespace Re
 	}
 
 	template<class T>
-	inline RePtr<T>::RePtr(const ReMasterPtr<T>& ptrMaster)
+	RePtr<T>::RePtr(const ReMasterPtr<T>& ptrMaster)
 	{
 		m_masterPtr = &ptrMaster;
 		m_objPtr = ptrMaster.m_objPtr;
@@ -69,14 +69,29 @@ namespace Re
 		m_masterPtr->Register(this);
 	}
 
+	template <class T>
+	RePtr<T>::RePtr(RePtr&& other) noexcept
+	{
+		m_objPtr = other.m_objPtr;
+		m_masterPtr = other.m_masterPtr;
+		if (m_masterPtr == nullptr) return;
+		m_masterPtr->Register(this);
+	}
+
 	template<class T>
-	inline T* RePtr<T>::Get()
+	T* RePtr<T>::Get()
 	{
 		return m_objPtr;
 	}
 
+	template <class T>
+	bool RePtr<T>::IsValid()
+	{
+		return m_objPtr != nullptr;
+	}
+
 	template<class T>
-	inline void RePtr<T>::Invalidate()
+	void RePtr<T>::Invalidate()
 	{
 		m_objPtr = nullptr;
 		m_masterPtr = nullptr;
@@ -84,20 +99,28 @@ namespace Re
 	}
 
 	template<class T>
-	inline RePtr<T>& RePtr<T>::operator=(const RePtr& other)
+	RePtr<T>& RePtr<T>::operator=(const RePtr& other)
 	{
+		if (this == &other) return *this;
+		
 		m_objPtr = other.m_objPtr;
 		m_masterPtr = other.m_masterPtr;
-		if (m_masterPtr == nullptr) return;
-		m_masterPtr->Register(this);
+		if (m_masterPtr != nullptr) m_masterPtr->Register(this);
+		return *this;
 	}
 
 	template<class T>
-	inline RePtr<T>& RePtr<T>::operator=(RePtr&& other) noexcept
+	RePtr<T>& RePtr<T>::operator=(RePtr&& other) noexcept
 	{
 		m_objPtr = other.m_objPtr;
 		m_masterPtr = other.m_masterPtr;
-		if (m_masterPtr == nullptr) return;
-		m_masterPtr->Register(this);
+		if (m_masterPtr != nullptr) m_masterPtr->Register(this);
+		return *this;
+	}
+
+	template<class T>
+	void Re::RePtr<T>::PassNewMaster(ReMasterPtrBase* master)
+	{
+		m_masterPtr = master;
 	}
 }

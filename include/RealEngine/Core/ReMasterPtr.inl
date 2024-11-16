@@ -8,6 +8,15 @@ namespace Re
 		return m_objPtr;
 	}
 
+	template<class T>
+	void ReMasterPtr<T>::ReValidateReferencingObjects()
+	{
+		for (RePtrBase* element : m_referencingObjects)
+		{
+			element->PassNewMaster(this);
+		}
+	}
+
 	template <class T>
 	void ReMasterPtr<T>::Register(RePtrBase* item) const
 	{
@@ -26,10 +35,13 @@ namespace Re
 	template <class T>
 	ReMasterPtr<T>& ReMasterPtr<T>::operator=(ReMasterPtr&& other) noexcept
 	{
-		m_objPtr = other.m_objPtr;
+		m_objPtr = std::exchange(other.m_objPtr, nullptr);
+		//m_referencingObjects = std::exchange(other.m_referencingObjects, nullptr);
+		// m_objPtr = other.m_objPtr;
 		m_referencingObjects = other.m_referencingObjects;
-		other.m_objPtr = nullptr;
+		// other.m_objPtr = nullptr;
 		other.m_referencingObjects.clear();
+		ReValidateReferencingObjects();
 		return *this;
 	}
 
@@ -45,6 +57,7 @@ namespace Re
 		other.m_objPtr = nullptr;
 	
 		other.m_referencingObjects.clear();
+		ReValidateReferencingObjects();
 	}
 
 	template <class T>
@@ -59,17 +72,19 @@ namespace Re
 
 	template<class T>
 	template<std::derived_from<T> U>
-	inline ReMasterPtr<T>::ReMasterPtr(ReMasterPtr<U>& other) : m_objPtr(other.m_objPtr), m_referencingObjects(other.m_referencingObjects)
+	ReMasterPtr<T>::ReMasterPtr(ReMasterPtr<U>& other) : m_objPtr(other.m_objPtr), m_referencingObjects(other.m_referencingObjects)
 	{
 		other.m_objPtr = nullptr;
 		other.m_referencingObjects.clear();
+		ReValidateReferencingObjects();
 	}
 
 	template<class T>
 	template<std::derived_from<T> U>
-	inline ReMasterPtr<T>::ReMasterPtr(ReMasterPtr<U>&& other) : m_objPtr(other.m_objPtr), m_referencingObjects(other.m_referencingObjects)
+	ReMasterPtr<T>::ReMasterPtr(ReMasterPtr<U>&& other) : m_objPtr(other.m_objPtr), m_referencingObjects(other.m_referencingObjects)
 	{
 		other.m_objPtr = nullptr;
 		other.m_referencingObjects.clear();
+		ReValidateReferencingObjects();
 	}
 }
