@@ -68,7 +68,7 @@ namespace Re
     void World::RegisterComponent(ReObject* object, ReComponent* component)
     {
         size_t objectIndex = GetObjectIndex(object);
-        m_componentMap[objectIndex].push_back(component);
+        m_componentMap[objectIndex].emplace_back(component);
         return;
         if (auto it = m_componentMap.find(objectIndex); it != m_componentMap.end())
         {

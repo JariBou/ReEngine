@@ -6,6 +6,14 @@
 
 namespace Re
 {
+	template <Derived<ReComponent> T>
+	RePtr<T> World::CreateComponent(ReObject* Owner)
+	{
+		ReMasterPtr<T> pComp = ReMasterPtr<T>(Owner);
+		RePtr<T> rePtr(pComp);
+		return rePtr;
+	}
+
 	template<Derived<ReObject> T, typename... Args>
 	RePtr<T> World::InstantiateObject(Args&&... ObjectParameters)
 	{

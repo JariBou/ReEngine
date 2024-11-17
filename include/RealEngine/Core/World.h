@@ -39,9 +39,13 @@ namespace Re
 
 			void RegisterComponent(ReObject* object, ReComponent* component);
 
+			// Honestly this should take like a RePtr, I busted my ass to create them so lets use them alr?
+			template<Derived<ReComponent> T>
+			RePtr<T> CreateComponent(ReObject* Owner);
+
 		    size_t GetObjectIndex(ReObject* object);
 		private:
-			std::map<size_t, std::vector<ReComponent*>> m_componentMap;
+			std::map<size_t, std::vector<ReMasterPtr<ReComponent>>> m_componentMap;
 
 		
 #pragma endregion
