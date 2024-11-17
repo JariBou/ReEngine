@@ -23,6 +23,29 @@ public:
 	}
 };
 
+class Tonpere : public Re::ReObject {
+
+public:
+
+	Tonpere(Re::ReEngine* engine, Re::WindowHandler* inWindow, const std::string& inText) : ReObject(engine) {
+		SetShouldTick(true);
+		text = inText;
+		window = inWindow;
+	}
+
+	void Print() {
+		std::cout << text << std::endl;
+	}
+
+	void Tick() override {
+		//Print();
+	}
+
+private:
+	std::string text;
+	Re::WindowHandler* window;
+};
+
 
 int main(int argc, char** argv) {
     
@@ -48,13 +71,15 @@ int main(int argc, char** argv) {
 	// ok non alors le pb est dans InstantiateObject ou lors du return un ReMasterPtr est détruit et donc invalide les RePtr
 	Re::RePtr<Tamere> pTamere2 = Re::RePtr<Tamere>(pTamere);
 
-	//Re::RePtr<Tamere> pTamere3 = engine.GetWorld()->InstantiateObject<Tamere>();
+	Re::RePtr<Tonpere> pTonpere = engine.GetWorld()->InstantiateObject<Tonpere>(window, "Je suis un obj");
 	//Re::RePtr<Re::ReObject> pTamere4 = Re::RePtr(pTamere3);
 	
 	// CA PRINT ALORS QUE C'EST NULL?????
 	// ça explique tjrs pas ça tho...
 	// Ok alors en fait c'est convertit en "extensions C#" avec le this en param donc tant que tu touches pas au truc c'est fine
 	if(pTamere.IsValid()) pTamere->Print();
+
+	if (pTonpere.IsValid()) pTonpere->Print();
 
     bool close = false;
     while (!close) {

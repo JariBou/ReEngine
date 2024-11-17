@@ -5,7 +5,7 @@ namespace Re
 {
 	ReEngine::ReEngine()
 	{
-		m_world = new World();
+		m_world = new World(this);
 	}
 
 	WindowHandler* ReEngine::InitWindow(WindowInfo wi)

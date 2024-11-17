@@ -1,3 +1,4 @@
+#include "ReMasterPtr.h"
 #pragma once
 
 namespace Re
@@ -36,10 +37,7 @@ namespace Re
 	ReMasterPtr<T>& ReMasterPtr<T>::operator=(ReMasterPtr&& other) noexcept
 	{
 		m_objPtr = std::exchange(other.m_objPtr, nullptr);
-		//m_referencingObjects = std::exchange(other.m_referencingObjects, nullptr);
-		// m_objPtr = other.m_objPtr;
 		m_referencingObjects = other.m_referencingObjects;
-		// other.m_objPtr = nullptr;
 		other.m_referencingObjects.clear();
 		ReValidateReferencingObjects();
 		return *this;
@@ -50,6 +48,7 @@ namespace Re
 	{
 		m_objPtr = new T(nullptr);
 	}
+
 
 	template<class T>
 	ReMasterPtr<T>::ReMasterPtr(ReMasterPtr&& other) noexcept : m_objPtr(other.m_objPtr), m_referencingObjects(std::move(other.m_referencingObjects))
@@ -68,6 +67,13 @@ namespace Re
 			element->Invalidate();
 		}
 		delete m_objPtr;
+	}
+
+	template<class T>
+	template<typename ...Args>
+	inline ReMasterPtr<T>::ReMasterPtr(Args && ...ObjectParameters)
+	{
+ 		m_objPtr = new T(ObjectParameters...);
 	}
 
 	template<class T>

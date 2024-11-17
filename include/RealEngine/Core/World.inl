@@ -5,12 +5,12 @@
 
 namespace Re
 {
-	template<Derived<ReObject> T>
-	RePtr<T> World::InstantiateObject()
+	template<Derived<ReObject> T, typename... Args>
+	RePtr<T> World::InstantiateObject(Args&&... ObjectParameters)
 	{
 		//T* newObject = new T(nullptr);
 		//TODO: optimize this bish
-		ReMasterPtr<T> val = ReMasterPtr<T>();
+		ReMasterPtr<T> val = ReMasterPtr<T>(m_engine, ObjectParameters...);
 		RePtr<T> rePtr(val);
 		// ReMasterPtr<ReObject>* val = new ReMasterPtr<T>(newObject);
 		//this->m_objects.push_back(newObject);

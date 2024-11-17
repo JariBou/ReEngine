@@ -11,6 +11,10 @@ namespace Re
 	{
 		public:
 			ReMasterPtr();
+
+			template<typename... Args>
+			ReMasterPtr(Args&&... ObjectParameters);
+
 			ReMasterPtr(const ReMasterPtr&) = delete;
 			ReMasterPtr(ReMasterPtr&& other) noexcept;
 			~ReMasterPtr();

@@ -4,10 +4,10 @@
 
 namespace Re
 {
-    World::World()
+    World::World(ReEngine* inEngine) : m_engine(inEngine)
     {
-        m_objectsV2.resize(4);
-    }
+		m_objectsV2.resize(4);
+	}
 
     void World::PhysicsTick()
     {
