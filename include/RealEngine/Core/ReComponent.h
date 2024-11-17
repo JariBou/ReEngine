@@ -4,18 +4,18 @@
 
 namespace Re
 {
+	class ReEngine;
+	class ReObject;
+
 	class RE_CORE_API ReComponent
 	{
 		public:
-			ReComponent() = default;
-			ReComponent(const ReComponent&) = delete;
-			ReComponent(ReComponent&&) = delete;
-			~ReComponent() = default;
+			virtual void ComponentTick(ReEngine* Engine) = 0;
 
-			ReComponent& operator=(const ReComponent&) = delete;
-			ReComponent& operator=(ReComponent&&) = delete;
-
-		private:
+			ReObject* GetOwner() const { return m_owner; }
+			
+		protected:
+		    ReObject* m_owner;
 	};
 }
 

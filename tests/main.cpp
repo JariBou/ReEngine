@@ -23,9 +23,13 @@ public:
 	}
 };
 
-class Tonpere : public Re::ReObject {
-
+class Tonpere : public Re::ReObject, public Re::RendererComponent {
 public:
+	
+	void Render(Re::Renderer* Renderer) override
+	{
+		
+	}
 
 	Tonpere(Re::ReEngine* engine, Re::WindowHandler* inWindow, const std::string& inText) : ReObject(engine) {
 		SetShouldTick(true);

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "RendererComponent.h"
 #include "RePtr.h"
 #include "World.h"
 
@@ -34,6 +35,13 @@ namespace Re
 	void World::AddObjectToWorld(ReMasterPtr<T>& item)
 	{
 		if (m_objectsV2.size() == m_objectsV2.capacity()) m_objectsV2.reserve(m_objectsV2.capacity() * 2);
+
+		if (RendererComponent* component = dynamic_cast<RendererComponent*>(item.Get()); component != nullptr)
+		{
+			if (m_renderedObjects.size() == m_renderedObjects.capacity()) m_renderedObjects.reserve(m_renderedObjects.capacity() * 2);
+			m_renderedObjects.push_back(component);
+		}
+		
 		// m_objectsV2.push_back(item);
 		m_objectsV2.push_back(std::move(item));
 	}
