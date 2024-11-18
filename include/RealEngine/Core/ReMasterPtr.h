@@ -1,61 +1,28 @@
 #pragma once
 
+#include <memory>
 #include <RealEngine/Core/Export.h>
-#include <vector>
-#include <RealEngine/Core/RePtr.h>
+
+#include "RePtrData.h"
 
 namespace Re
 {
-	class ReObject;
-
-	template<class T>
-	class ReMasterPtr: public ReMasterPtrBase
+	template<typename T>
+	class ReMasterPtr
 	{
 		public:
-			ReMasterPtr();
-
-			template<typename... Args>
-			ReMasterPtr(Args&&... ObjectParameters);
-
+			ReMasterPtr() = default;
 			ReMasterPtr(const ReMasterPtr&) = delete;
-			ReMasterPtr(ReMasterPtr&& other) noexcept;
+			ReMasterPtr(ReMasterPtr&&) = delete;
 			~ReMasterPtr();
 
-			template<std::derived_from<T> U>
-			ReMasterPtr(ReMasterPtr<U>& other);
-
-			template<std::derived_from<T> U>
-			ReMasterPtr(ReMasterPtr<U>&& other);
-
-			T* Get();
+		    T* GetObject();
 
 			ReMasterPtr& operator=(const ReMasterPtr&) = delete;
-			ReMasterPtr& operator=(ReMasterPtr&& other) noexcept;
-
-			bool operator==(const ReMasterPtr& other) const;
-		
-			bool operator==(const RePtr<T>& other) const;
-		
-			bool operator==(const ReObject& other) const;
-
-			T* operator-> ()
-			{
-				return m_objPtr;
-			}
-
-			void ReValidateReferencingObjects(); 
-		
-			void Register(RePtrBase* item) const override;
-			void Unregister(RePtrBase* item) const override;
+			ReMasterPtr& operator=(ReMasterPtr&&) = delete;
 
 		private:
-			T* m_objPtr;
-			mutable std::vector<RePtrBase*> m_referencingObjects;
-		
-			friend class RePtr<T>;
-
-			template<typename U>
-			friend class ReMasterPtr;
+			std::shared_ptr<RePtrData> m_data;
 	};
 }
 
