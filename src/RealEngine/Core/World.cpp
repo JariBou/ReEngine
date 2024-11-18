@@ -55,38 +55,21 @@ namespace Re
 
 		auto it2 = m_garbageV2.begin();
 		while (it2 != m_garbageV2.end()) {
-            auto objectIt = std::find(m_objectsV2.begin(), m_objectsV2.end(), *it2);
-		    m_garbageV2.erase(objectIt);
+      //       auto objectIt = std::find(m_objectsV2.begin(), m_objectsV2.end(), *it2);
+		    // m_garbageV2.erase(objectIt);
             m_garbageV2.erase(it2);
 		}
     }
 
-#pragma region Components
-
-    // Wait maybe use a master ptr?
-    // or leave the handling to the object...
-    void World::RegisterComponent(ReObject* object, ReComponent* component)
+    // template <Derived<ReObject> T>
+    RePtr<ReObject> World::GetRePtrTo(ReObject* object)
     {
-        size_t objectIndex = GetObjectIndex(object);
-        m_componentMap[objectIndex].emplace_back(component);
-        return;
-        if (auto it = m_componentMap.find(objectIndex); it != m_componentMap.end())
+        auto it = m_objectsV2.begin();
+        while (it != m_objectsV2.end())
         {
-            it->second.push_back(component);
-        } else
-        {
-            m_componentMap[objectIndex].push_back(component);
+            if (*it == object) return RePtr(*it);
         }
+        return nullptr;
     }
-
-    size_t World::GetObjectIndex(ReObject* object)
-    {
-        if (object == nullptr) return -1;
-        auto it = std::find(m_objectsV2.begin(), m_objectsV2.end(), object);
-        if (it == m_objectsV2.end()) return -1;
-        return std::distance(m_objectsV2.begin(), it);
-    }
-    
-#pragma endregion
 
 }

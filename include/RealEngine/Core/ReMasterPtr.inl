@@ -44,6 +44,30 @@ namespace Re
 	}
 
 	template <class T>
+	bool ReMasterPtr<T>::operator==(const ReMasterPtr& other) const
+	{
+		return m_objPtr == other.m_objPtr;
+	}
+
+	template <class T>
+	bool ReMasterPtr<T>::operator==(const RePtr<T>& other) const
+	{
+		return m_objPtr == other.m_objPtr;
+	}
+
+	template<class T>
+	inline bool ReMasterPtr<T>::operator==(const ReObject& other) const
+	{
+		return m_objPtr == &other;
+	}
+
+//	template<class T>
+//	inline bool ReMasterPtr<T>::operator==(const ReObject* other) const
+//	{
+//		return m_objPtr == other;
+//	}
+
+	template <class T>
 	ReMasterPtr<T>::ReMasterPtr()
 	{
 		m_objPtr = new T(nullptr);
@@ -71,7 +95,7 @@ namespace Re
 
 	template<class T>
 	template<typename ...Args>
-	inline ReMasterPtr<T>::ReMasterPtr(Args && ...ObjectParameters)
+	inline ReMasterPtr<T>::ReMasterPtr(Args&& ...ObjectParameters)
 	{
  		m_objPtr = new T(ObjectParameters...);
 	}

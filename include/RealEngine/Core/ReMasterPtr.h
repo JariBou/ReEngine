@@ -6,6 +6,8 @@
 
 namespace Re
 {
+	class ReObject;
+
 	template<class T>
 	class ReMasterPtr: public ReMasterPtrBase
 	{
@@ -30,6 +32,12 @@ namespace Re
 			ReMasterPtr& operator=(const ReMasterPtr&) = delete;
 			ReMasterPtr& operator=(ReMasterPtr&& other) noexcept;
 
+			bool operator==(const ReMasterPtr& other) const;
+		
+			bool operator==(const RePtr<T>& other) const;
+		
+			bool operator==(const ReObject& other) const;
+
 			T* operator-> ()
 			{
 				return m_objPtr;
@@ -49,8 +57,6 @@ namespace Re
 			template<typename U>
 			friend class ReMasterPtr;
 	};
-
-
 }
 
 #include <RealEngine/Core/ReMasterPtr.inl>

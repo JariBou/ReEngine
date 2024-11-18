@@ -6,13 +6,39 @@
 
 namespace Re
 {
+	#pragma region Components
+
+	
+
 	template <Derived<ReComponent> T>
-	RePtr<T> World::CreateComponent(ReObject* Owner)
+	void World::RegisterComponent(RePtr<T>* component, RePtr<ReObject>* owner)
 	{
-		ReMasterPtr<T> pComp = ReMasterPtr<T>(Owner);
-		RePtr<T> rePtr(pComp);
-		return rePtr;
+		if (owner == nullptr) return;
+
+		
 	}
+
+	template <Derived<ReComponent> T>
+	RePtr<T> World::CreateComponent(ReObject* owner)
+	{
+		ReMasterPtr<T> pComp = ReMasterPtr<T>(owner);
+		RePtr<T> rePtrComp(pComp);
+
+		RegisterComponent(rePtrComp, GetRePtrTo(owner));
+
+		// m_componentMap[rePtr] = pComp;
+		
+		return rePtrComp;
+	}
+    
+	template <Derived<ReComponent> T>
+	size_t World::GetObjectIndex(RePtr<T>* component)
+	{
+		auto isSame = [&component](ReMasterPtr<ReComponent>* pComp) {return pComp == component;};
+		auto it = std::find_if(m_objectsV2.begin(), m_objectsV2.end(), isSame);
+		return it - m_objectsV2.begin();
+	}
+#pragma endregion
 
 	template<Derived<ReObject> T, typename... Args>
 	RePtr<T> World::InstantiateObject(Args&&... ObjectParameters)

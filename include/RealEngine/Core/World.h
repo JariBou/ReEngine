@@ -36,20 +36,26 @@ namespace Re
 			void CollectGarbage();
 
 #pragma region Components
+			// template<Derived<ReObject> T>
+			// RePtr<T> GetRePtrTo(ReObject* object);
+		
+			RePtr<ReObject> GetRePtrTo(ReObject* object);
 
-			void RegisterComponent(ReObject* object, ReComponent* component);
+			template<Derived<ReComponent> T>
+			void RegisterComponent(RePtr<T>* component, RePtr<ReObject>* owner);
 
 			// Honestly this should take like a RePtr, I busted my ass to create them so lets use them alr?
 			template<Derived<ReComponent> T>
-			RePtr<T> CreateComponent(ReObject* Owner);
+			RePtr<T> CreateComponent(ReObject* owner);
 
-		    size_t GetObjectIndex(ReObject* object);
+			template<Derived<ReComponent> T>
+		    size_t GetObjectIndex(RePtr<T>* component);
 		private:
 			std::map<size_t, std::vector<ReMasterPtr<ReComponent>>> m_componentMap;
 
 		
 #pragma endregion
-
+	public:
 			template<Derived<ReObject> T, typename... Args>
 			RePtr<T> InstantiateObject(Args&&... ObjectParameters);
 

@@ -10,7 +10,10 @@ namespace Re
 	class RE_CORE_API ReComponent
 	{
 		public:
-			virtual void ComponentTick(ReEngine* Engine) = 0;
+		ReComponent(ReObject* Owner);
+		virtual ~ReComponent() = default;
+		
+		virtual void ComponentTick(ReEngine* Engine) = 0;
 
 			ReObject* GetOwner() const { return m_owner; }
 			
