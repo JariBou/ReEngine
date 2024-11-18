@@ -1,7 +1,7 @@
 #pragma once
 
 #include <RealEngine/Core/Export.h>
-#include <RealEngine/Core/ReHandleData.h>
+#include <RealEngine/Core/ObjectHandling/ReHandleData.h>
 
 namespace Re
 {
@@ -33,4 +33,4 @@ namespace Re
 	};
 }
 
-#include <RealEngine/Core/ReHandledObject.inl>
+#include <RealEngine/Core/ObjectHandling/ReHandledObject.inl>

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "RePtr.h"
 
 namespace Re
 {

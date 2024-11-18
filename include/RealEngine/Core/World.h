@@ -1,9 +1,9 @@
 #pragma once
 
-#include <map>
 #include <RealEngine/Core/Export.h>
-#include <RealEngine/Core/RePtr.h>
+#include <RealEngine/Core/ObjectHandling/RePtr.h>
 #include <vector>
+#include <map>
 
 #include "ReComponent.h"
 

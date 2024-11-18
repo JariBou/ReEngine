@@ -1,7 +1,7 @@
 #pragma once
 
 #include <RealEngine/Core/Export.h>
-#include <RealEngine/Core/ReHandledObject.h>
+#include <RealEngine/Core/ObjectHandling/ReHandledObject.h>
 
 
 namespace Re
