@@ -1,6 +1,5 @@
 #include <RealEngine/Core/ReObject.h>
 #include <RealEngine/Core/ReEngine.h>
-#include <RealEngine/Core/ReEngine.h>
 
 namespace Re
 {
@@ -10,18 +9,24 @@ namespace Re
 
     ReObject::~ReObject()
     {
-        GetWorld()->ScheduleDestroy(this);
+        //GetWorld()->ScheduleDestroy(this);
     }
 
     void ReObject::Tick()
     {
     }
-    World* ReObject::GetWorld()
+
+    void ReObject::DestroyObject()
+    {
+        GetWorld()->ScheduleDestroy(this);
+    }
+
+    World* ReObject::GetWorld() const
     {
         return m_engine->GetWorld();
     }
 
-    bool ReObject::ShouldTick()
+    bool ReObject::ShouldTick() const
     {
         return m_shouldTick;
     }

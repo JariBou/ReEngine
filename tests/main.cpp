@@ -4,6 +4,7 @@
 #include <SDL2/SDL_keycode.h>
 #include <RealEngine/Core/ReEngine.h>
 #include <RealEngine/Core/ReObject.h>
+#include <RealEngine/Core/RendererComponent.h>
 
 
 class Tamere : public Re::ReObject {
@@ -15,7 +16,7 @@ public:
 	}
 
 	void Print() {
-		std::cout << "tamere" << std::endl;
+		std::cout << "tamere" << "\n";
 	}
 
 	void Tick() override {
@@ -38,7 +39,7 @@ public:
 	}
 
 	void Print() {
-		std::cout << text << std::endl;
+		std::cout << text << "\n";
 	}
 
 	void Tick() override {

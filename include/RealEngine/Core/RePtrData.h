@@ -1,7 +1,7 @@
 #pragma once
 
-#include <memory>
 #include <RealEngine/Core/Export.h>
+#include <memory>
 
 namespace Re
 {
@@ -10,7 +10,7 @@ namespace Re
 		public:
 			void* object;
 
-		static std::shared_ptr<RePtrData> GetEmptyObject();
+			static std::shared_ptr<RePtrData> GetEmptyObject();
 	};
 }
 
