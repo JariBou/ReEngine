@@ -4,7 +4,6 @@
 #include <SDL2/SDL_keycode.h>
 #include <RealEngine/Core/ReEngine.h>
 #include <RealEngine/Core/ReObject.h>
-#include <RealEngine/Core/RendererComponent.h>
 
 
 class Tamere : public Re::ReObject {
@@ -24,13 +23,8 @@ public:
 	}
 };
 
-class Tonpere : public Re::ReObject, public Re::RendererComponent {
+class Tonpere : public Re::ReObject{
 public:
-	
-	void Render(Re::Renderer* Renderer) override
-	{
-		
-	}
 
 	Tonpere(Re::ReEngine* engine, Re::WindowHandler* inWindow, const std::string& inText) : ReObject(engine) {
 		SetShouldTick(true);

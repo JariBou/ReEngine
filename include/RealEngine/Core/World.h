@@ -5,8 +5,6 @@
 #include <vector>
 #include <map>
 
-#include "ReComponent.h"
-
 namespace Re
 {
 	class RendererComponent;

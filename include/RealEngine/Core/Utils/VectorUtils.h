@@ -14,4 +14,4 @@ namespace Re
 	};
 }
 
-#include <RealEngine/Core/VectorUtils.inl>
+#include <RealEngine/Core/Utils/VectorUtils.inl>

@@ -1,8 +1,7 @@
 #include <RealEngine/Core/World.h>
 #include <RealEngine/Core/ReObject.h>
 #include <RealEngine/Core/ReEngine.h>
-#include <RealEngine/Core/VectorUtils.h>
-#include <RealEngine/Core/RendererComponent.h>
+#include <RealEngine/Core/Utils/VectorUtils.h>
 
 namespace Re
 {
@@ -36,9 +35,7 @@ namespace Re
 
     void World::RenderTick() const
     {
-        for (RendererComponent* comp : m_renderedObjects) {
-            comp->Render(m_engine->GetRenderer());
-        }
+        
     }
 
     void World::ScheduleDestroy(ReObject* object)
