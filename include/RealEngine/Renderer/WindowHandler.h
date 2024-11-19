@@ -20,7 +20,7 @@ namespace Re
 			WindowHandler(FWindowInfo windowInfo);
 			WindowHandler(const WindowHandler&) = delete;
 			WindowHandler(WindowHandler&&) = delete;
-			~WindowHandler() = default;
+			~WindowHandler();
 
 			WindowHandler& operator=(const WindowHandler&) = delete;
 			WindowHandler& operator=(WindowHandler&&) = delete;
@@ -30,11 +30,13 @@ namespace Re
 			int PollEvent(SDL_Event& event);
 
 			SDL_Window* GetWindow() const;
+			const FWindowInfo& GetWindowInfo() const;
 			Renderer* GetRenderer() const;
 
 		private:
 			SDL_Window* m_window;
 			Renderer* m_renderer;
+			FWindowInfo m_windowInfo;
 	};
 	
 }
