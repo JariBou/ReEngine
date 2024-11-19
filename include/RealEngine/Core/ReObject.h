@@ -1,11 +1,13 @@
 #pragma once
 
+#include <vector>
 #include <RealEngine/Core/Export.h>
 #include <RealEngine/Core/ObjectHandling/ReHandledObject.h>
 
 
 namespace Re
 {
+	class ReComponent;
 	class ReEngine;
 	class World;
 	class RePtrData;
@@ -18,20 +20,17 @@ namespace Re
 			ReObject(const ReObject&) = delete;
 			ReObject(ReObject&&) = delete;
 			~ReObject() override;
-
-			virtual void Tick();
-
+		
 			void DestroyObject();
-
+		
+			virtual void RegisterComponents(std::vector<ReComponent*>& componentList);
+		
 			World* GetWorld() const;
-			bool ShouldTick() const;
-			void SetShouldTick(bool state);
 		
 			ReObject& operator=(const ReObject&) = delete;
 			ReObject& operator=(ReObject&&) = delete;
 
-		private:
-			bool m_shouldTick = false;
+		protected:
 			ReEngine* m_engine;
 	};
 }

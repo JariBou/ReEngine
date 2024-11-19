@@ -7,6 +7,11 @@
 
 namespace Re
 {
+	class ReComponent;
+}
+
+namespace Re
+{
 	class RendererComponent;
 }
 
@@ -70,7 +75,8 @@ namespace Re
 
 #pragma region GarbageCollector
 
-		void ScheduleDestroy(ReObject* object);
+		void ScheduleObjectDestroy(ReObject* object);
+		void ScheduleComponentDestroy(ReComponent* component);
 		
 		void CollectGarbage();
 		
@@ -81,10 +87,13 @@ namespace Re
 		
 			std::vector<ReObject*> m_objects;
 			// std::vector<ReMasterPtr<ReObject>> m_objectsV2;
-			std::vector<ReObject*> m_garbage;
+			std::vector<ReObject*> m_objectGarbage;
+			std::vector<ReComponent*> m_componentGarbage;
 			// std::vector<ReMasterPtr<ReObject>> m_garbageV2;
 
 			std::vector<RendererComponent*> m_renderedObjects;
+
+			std::map<ReObject*, std::vector<ReComponent*>> m_objectsMap;
 
 
 			// template<Derived<ReObject> T>

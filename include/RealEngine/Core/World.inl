@@ -91,5 +91,8 @@ namespace Re
 		//TODO push back creates new allocation wtf??
 		if (m_objects.size() == m_objects.capacity()) m_objects.reserve(m_objects.capacity() * 2);
 		m_objects.push_back(object);
+		m_objectsMap[object] = std::vector<ReComponent*>();
+
+		object->RegisterComponents(m_objectsMap[object]);
 	}
 }

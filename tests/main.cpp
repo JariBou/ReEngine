@@ -5,21 +5,18 @@
 #include <RealEngine/Core/ReEngine.h>
 #include <RealEngine/Core/ReObject.h>
 
+#include "RealEngine/Core/Components/RCTickable.h"
+
 
 class Tamere : public Re::ReObject {
 
 public:
 
 	Tamere(Re::ReEngine* engine) : ReObject(engine) {
-		SetShouldTick(true);
 	}
 
 	void Print() {
 		std::cout << "tamere" << "\n";
-	}
-
-	void Tick() override {
-		//Print();
 	}
 };
 
@@ -27,17 +24,28 @@ class Tonpere : public Re::ReObject{
 public:
 
 	Tonpere(Re::ReEngine* engine, Re::WindowHandler* inWindow, const std::string& inText) : ReObject(engine) {
-		SetShouldTick(true);
 		text = inText;
 		window = inWindow;
 	}
 
-	void Print() {
-		std::cout << text << "\n";
+	int testInt = 0;
+
+	void RegisterComponents(std::vector<Re::ReComponent*>& componentList) override
+	{
+		componentList.push_back(Re::ReComponent::Create<Re::RCTickable<Tonpere>>(this, &Tonpere::TickFunc));
+		//componentList.push_back(new Re::RCTickable(this, &Tonpere::TickFunc));
+
+		ReObject::RegisterComponents(componentList);
 	}
 
-	void Tick() override {
-		//Print();
+	void TickFunc()
+	{
+		std::cout << "Tickable Tick Custom lol | " << testInt << "\n";
+		testInt++;
+	}
+
+	void Print() {
+		std::cout << text << "\n";
 	}
 
 private:
