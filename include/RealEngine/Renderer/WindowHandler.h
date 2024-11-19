@@ -7,7 +7,7 @@
 
 namespace Re
 {
-	struct RE_RENDERER_API WindowInfo {
+	struct RE_RENDERER_API FWindowInfo {
 		int width = 680;
 		int height = 480;
 		int posX = SDL_WINDOWPOS_UNDEFINED;
@@ -17,7 +17,7 @@ namespace Re
 	class RE_RENDERER_API WindowHandler
 	{
 		public:
-			WindowHandler(WindowInfo windowInfo);
+			WindowHandler(FWindowInfo windowInfo);
 			WindowHandler(const WindowHandler&) = delete;
 			WindowHandler(WindowHandler&&) = delete;
 			~WindowHandler() = default;

@@ -8,7 +8,7 @@ namespace Re
 		m_world = new World(this);
 	}
 
-	WindowHandler* ReEngine::InitWindow(WindowInfo wi)
+	WindowHandler* ReEngine::InitWindow(FWindowInfo wi)
 	{
 		m_windowHandler = new WindowHandler(wi);
 		return m_windowHandler;
@@ -22,9 +22,13 @@ namespace Re
 
 	void ReEngine::Tick()
 	{
+		GetRenderer()->RenderClear();
+
 		GetWorld()->PhysicsTick();
 		GetWorld()->Tick();
-		GetWorld()->RenderTick(); // Maybe should be separated idk
+		
+		GetRenderer()->UpdateRenderer();
+		// GetWorld()->RenderTick(); // Maybe should be separated idk
 	}
 
 	World* ReEngine::GetWorld()

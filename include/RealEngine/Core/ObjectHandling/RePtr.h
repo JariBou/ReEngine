@@ -4,23 +4,32 @@
 #include <RealEngine/Core/ObjectHandling/ReHandledObject.h>
 
 namespace Re
-{
+{	
 	template<typename T>
 	class RePtr
 	{
 		friend ReHandledObject<T>;
+		template<typename U>
+		friend class RePtr;
 		
 		public:
 		
 #pragma region Constructors
 			RePtr();
+			
 			explicit RePtr(T* object);
 
-			template<typename U>
-			explicit RePtr(const RePtr<U>& other);
-		
-			template<typename U>
-			explicit RePtr(RePtr<U>&& other);
+			template<BaseOf<T> U>
+			RePtr(const RePtr<U>& other);
+			
+			template<BaseOf<T> U>
+			RePtr(RePtr<U>&& other);
+
+			template<DerivedFrom<T> U>
+			RePtr(const RePtr<U>& other);
+			
+			template<DerivedFrom<T> U>
+			RePtr(RePtr<U>&& other);
 		
 			RePtr(const RePtr& other) = default;
 			RePtr(RePtr&& other) noexcept;
@@ -29,8 +38,12 @@ namespace Re
 
 			T* Get() const;
 		
-			template<typename U>
+			template<DerivedFrom<T> U>
 			U* GetAs() const;
+
+			// DONT USE DYNAMIC_CAST BUT JUST IN CAS IT'S HERE
+			template<DerivedFrom<T> U>
+			U* GetAsDynamic() const;
 		
 			bool IsValid() const;
 
@@ -41,16 +54,25 @@ namespace Re
 #pragma region Operators
 			T* operator->() const;
 
-			template<typename U>
+			// Not sure about these =======================
+			template<DerivedFrom<T> U>
 			U* operator->() const;
 		
-			template<typename U>
+			template<DerivedFrom<T> U>
 			operator U*() const;
+		
+			template<DerivedFrom<T> U>
+			operator RePtr<U>*() const;
+
+			template<BaseOf<T> U>
+			operator RePtr<U>*() const;
+			// =============================================
 		
 			explicit operator bool() const; // don't really understand the explicit thing but Rider says so... and Rider is usually right while I'm not
 		
 			RePtr& operator=(const RePtr&) = delete;
 			RePtr& operator=(RePtr&&) = delete;
+
 #pragma endregion
 		
 		private:

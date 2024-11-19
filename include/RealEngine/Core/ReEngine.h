@@ -19,7 +19,7 @@ namespace Re
 			ReEngine& operator=(const ReEngine&) = delete;
 			ReEngine& operator=(ReEngine&&) = delete;
 
-			WindowHandler* InitWindow(WindowInfo wi);
+			WindowHandler* InitWindow(FWindowInfo wi);
 			Renderer* GetRenderer();
 
 			inline World* GetWorld();

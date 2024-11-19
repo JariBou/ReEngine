@@ -1,3 +1,4 @@
+#include "RePtr.h"
 #pragma once
 
 namespace Re
@@ -14,37 +15,71 @@ namespace Re
 	}
 
 	template <typename T>
+	template <BaseOf<T> U>
+	RePtr<T>::RePtr(const RePtr<U>& other)
+	{
+		//static_assert(std::derived_from<T, U>);
+		if (other.template GetAs<T>() != nullptr) {
+			m_data = other.m_data;
+		} else
+		{
+			m_data = ReHandleData::GetEmptyObject();
+		}
+	}
+	
+	template <typename T>
+	template <BaseOf<T> U>
+	RePtr<T>::RePtr(RePtr<U>&& other)
+	{
+		//static_assert(std::derived_from<T, U>);
+		//static_assert(other.template GetAs<T>() != nullptr, "RePtr<T>::RePtr<T>: Invalid RePtr");
+		if (other.template GetAs<T>() != nullptr) {
+			m_data = std::move(other.m_data);
+			other.m_data = ReHandleData::GetEmptyObject();
+		} else
+		{
+			m_data = ReHandleData::GetEmptyObject();
+		}
+		other.m_data = ReHandleData::GetEmptyObject();
+	}
+
+	template <typename T>
+	template <DerivedFrom<T> U>
+	RePtr<T>::RePtr(const RePtr<U>& other) : m_data(other.m_data)
+	{
+	}
+
+	template <typename T>
+	template <DerivedFrom<T> U>
+	RePtr<T>::RePtr(RePtr<U>&& other) :
+	m_data(std::move(other.m_data))
+	{
+		other.m_data = ReHandleData::GetEmptyObject();
+	}
+
+	template <typename T>
 	RePtr<T>::~RePtr()
 	{
 		Reset(nullptr);
 	}
 
-	template<typename T>
-	template<typename U>
-	RePtr<T>::RePtr(const RePtr<U>& other) :
-	m_data(other.m_data)
-	{
-		static_assert(std::is_base_of_v<T, U>, "Can only implicitly convert from a derived to a base");
-	}
-
-	template<typename T>
-	template<typename U>
-	RePtr<T>::RePtr(RePtr<U>&& other) :
-	m_data(std::move(other.m_data))
-	{
-		other.m_handleData = ReHandleData::GetEmptyObject();
-
-		static_assert(std::is_base_of_v<T, U>, "Can only implicitly convert from a derived to a base");
-	}
-
-	template<typename T>
-	template<typename U>
-	inline U* RePtr<T>::GetAs() const
-	{
-		static_assert(std::is_base_of_v<T, U>, "Can only implicitly convert from a derived to a base");
-		return static_cast<U*>(Get());
-	}
-
+	// template<typename T>
+	// template<typename U>
+	// RePtr<T>::RePtr(const RePtr<U>& other) :
+	// m_data(other.m_data)
+	// {
+	// 	static_assert(std::is_base_of_v<T, U>, "Can only implicitly convert from a derived to a base");
+	// }
+	//
+	// template<typename T>
+	// template<typename U>
+	// RePtr<T>::RePtr(RePtr<U>&& other) :
+	// m_data(std::move(other.m_data))
+	// {
+	// 	other.m_handleData = ReHandleData::GetEmptyObject();
+	//
+	// 	static_assert(std::is_base_of_v<T, U>, "Can only implicitly convert from a derived to a base");
+	// }
 
 	template <typename T>
 	RePtr<T>::RePtr(RePtr&& other) noexcept
@@ -58,6 +93,22 @@ namespace Re
 	{
 		if (m_data == nullptr) return nullptr;
 		return static_cast<T*>(m_data->object);
+	}
+
+	template <typename T>
+	template <DerivedFrom<T> U>
+	U* RePtr<T>::GetAs() const
+	{
+		if (m_data == nullptr) return nullptr;
+		return static_cast<U*>(m_data->object);
+	}
+
+	template<typename T>
+	template<DerivedFrom<T> U>
+	U* RePtr<T>::GetAsDynamic() const
+	{
+		if (m_data == nullptr) return nullptr;
+		return dynamic_cast<U*>(m_data->object);
 	}
 
 	template <typename T>
@@ -99,22 +150,50 @@ namespace Re
 	}
 
 	template <typename T>
-	template <typename U>
+	template <DerivedFrom<T> U>
 	U* RePtr<T>::operator->() const
+	{
+		return GetAs<U>();
+	}
+	
+	template <typename T>
+	template <DerivedFrom<T> U>
+	RePtr<T>::operator U*() const
 	{
 		return GetAs<U>();
 	}
 
 	template <typename T>
-	template <typename U>
-	RePtr<T>::operator U*() const
+	template <DerivedFrom<T> U>
+	RePtr<T>::operator RePtr<U>*() const
 	{
-		return GetAs<U>();
+		return RePtr<U>(GetAs<U>());
 	}
+
+	template <typename T>
+	template <BaseOf<T> U>
+	RePtr<T>::operator RePtr<U>*() const
+	{
+		return RePtr<U>(static_cast<U*>(Get()));
+	}
+
+	// template <typename T>
+	// template <typename U>
+	// RePtr<T>::operator U*() const
+	// {
+	// 	return GetAs<U>();
+	// }
 
 	template<typename T>
 	Re::RePtr<T>::operator bool() const
 	{
 		return IsValid();
 	}
+
+	// template <typename T>
+	// template <BaseOf<T> U>
+	// RePtr<U>& RePtr<T>::operator=(const RePtr<U>&)
+	// {
+	// 	return RePtr<U>(static_cast<U*>(Get()));
+	// }
 }

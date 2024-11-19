@@ -11,6 +11,6 @@ namespace Re
     ReObjectTemplate
     void RCDisplayable<T>::TickComponent()
     {
-        (GetOwnerAs<T>()->*m_displayFunc)();
+        (GetOwnerAs<T>()->*m_displayFunc)(GetEngine()->GetRenderer());
     }
 }

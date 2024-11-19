@@ -11,6 +11,11 @@ namespace Re
     {
 	}
 
+    ReEngine* World::GetEngine() const
+    {
+        return m_engine;
+    }
+
     void World::PhysicsTick()
     {
     }

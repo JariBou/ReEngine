@@ -3,6 +3,8 @@
 #include <RealEngine/Renderer/Export.h>
 #include <SDL2/SDL_video.h>
 
+#include "Shapes/Shape.h"
+
 class SDL_Renderer;
 class SDL_Rect;
 
@@ -13,6 +15,10 @@ namespace Re
 		int g = 0;
 		int b = 0;
 		int a = 255;
+		
+		static RGBA Black();
+		static RGBA Red();
+		static RGBA White();
 	};
 
 	class RE_RENDERER_API Renderer
@@ -26,8 +32,9 @@ namespace Re
 			Renderer& operator=(const Renderer&) = delete;
 			Renderer& operator=(Renderer&&) = delete;
 
-			void RenderClear() const;
+			void RenderClear();
 			void UpdateRenderer() const;
+			void RenderShape(Shape& shape);
 
 			void SetColor(RGBA color);
 			void ReverseColor();

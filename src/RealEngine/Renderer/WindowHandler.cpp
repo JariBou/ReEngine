@@ -3,7 +3,7 @@
 
 namespace Re
 {
-	WindowHandler::WindowHandler(WindowInfo windowInfo)
+	WindowHandler::WindowHandler(FWindowInfo windowInfo)
 	{
 		if (SDL_Init(SDL_INIT_EVERYTHING) < 0) throw;
 

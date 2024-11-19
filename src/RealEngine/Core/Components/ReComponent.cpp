@@ -3,6 +3,8 @@
 #include <RealEngine/Core/ReObject.h>
 #include <RealEngine/Core/ObjectHandling/RePtr.h>
 
+#include "RealEngine/Core/World.h"
+
 namespace Re
 {
     ReComponent::ReComponent(ReObject* owner, int priority) : m_owner(owner), m_priority(priority)
@@ -28,6 +30,11 @@ namespace Re
     World* ReComponent::GetWorld() const
     {
         return m_owner->GetWorld();
+    }
+
+    ReEngine* ReComponent::GetEngine() const
+    {
+        return GetWorld()->GetEngine();
     }
 
     bool ReComponent::ShouldTick() const

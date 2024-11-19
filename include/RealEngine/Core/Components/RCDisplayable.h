@@ -3,17 +3,24 @@
 #include <RealEngine/Core/Export.h>
 
 #include "ReComponent.h"
+#include <RealEngine/Core/ReEngine.h>
 
 #ifndef DisplayFuncDef
-#define inDisplayFunc void (T::*func)(/* maybe take in delta time in the future, idk */)
-#define varDisplayFunc void (T::*m_displayFunc)(/* maybe take in delta time in the future, idk */)
+// namespace Re
+// {
+// 	class Renderer;
+// }
+#define inDisplayFunc void (T::*func)(Renderer* /* maybe take in delta time in the future, idk */)
+#define varDisplayFunc void (T::*m_displayFunc)(Renderer*/* maybe take in delta time in the future, idk */)
 #define DisplayFuncDef
 #endif
 
 namespace Re
 {
+	class Renderer;
+	
 	ReObjectTemplate
-	class RE_CORE_API RCDisplayable : public ReComponent
+	class RCDisplayable : public ReComponent
 	{
 		public:
 			RCDisplayable(ReObject* owner, inDisplayFunc);

@@ -8,13 +8,16 @@
 
 #ifndef TEMPLATE_MACROS
 #define TEMPLATE_MACROS
+#include <concepts>
 
-#include <type_traits>
 template<typename T, typename U>
-concept Derived = std::is_base_of_v<U, T>;
+concept DerivedFrom = std::derived_from<T, U>;
 
-#define ReObjectTemplate template<Derived<class ReObject> T>
+template<typename T, typename U>
+concept BaseOf = std::derived_from<U, T>;
 
-#define IWorldObjectTemplate template<Derived<class IWorldObject> T>
+#define ReObjectTemplate template<DerivedFrom<class ReObject> T>
+
+#define IWorldObjectTemplate template<DerivedFrom<class IWorldObject> T>
 
 #endif

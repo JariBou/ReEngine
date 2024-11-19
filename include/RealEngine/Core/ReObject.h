@@ -1,10 +1,12 @@
 #pragma once
 
+#include <string>
 #include <vector>
 #include <RealEngine/Core/Export.h>
 #include <RealEngine/Core/ObjectHandling/ReHandledObject.h>
 
 #include "IWorldObject.h"
+#include "TagContainer.h"
 
 
 namespace Re
@@ -14,7 +16,7 @@ namespace Re
 	class World;
 	class RePtrData;
 
-	class RE_CORE_API ReObject : public ReHandledObject<ReObject>, public IWorldObject
+	class RE_CORE_API ReObject : public ReHandledObject<ReObject>, public IWorldObject, public TagContainer
 	{
 		public:
 			ReObject(ReEngine* engine);
@@ -26,19 +28,24 @@ namespace Re
 #pragma region IWorldObject Methods
 
 			World* GetWorld() const override;
+			ReEngine* GetEngine() const override;
 		
 			void Destroy() override;
 			void OnObjectDestroyed() override;
 		
 #pragma endregion
+
+#pragma region ReObject Methods
 		
 			virtual void RegisterComponents(std::vector<ReComponent*>& componentList);
-
+		
+#pragma endregion
 			ReObject& operator=(const ReObject&) = delete;
 			ReObject& operator=(ReObject&&) = delete;
 
 		protected:
 			ReEngine* m_engine;
+
 	};
 }
 

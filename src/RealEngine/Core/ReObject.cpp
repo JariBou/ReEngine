@@ -43,10 +43,14 @@ namespace Re
             return compA->GetPriority() > compB->GetPriority();
         });
     }
-
+    
     World* ReObject::GetWorld() const
     {
         return m_engine->GetWorld();
     }
-    
+
+    ReEngine* ReObject::GetEngine() const
+    {
+        return m_engine;
+    }
 }

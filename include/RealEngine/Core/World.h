@@ -23,6 +23,7 @@ namespace Re
 			World(World&&) = delete;
 			~World() = default;
 
+			ReEngine* GetEngine() const;
 			void PhysicsTick();
 			void Tick();
 			void RenderTick() const;

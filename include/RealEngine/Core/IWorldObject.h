@@ -22,6 +22,7 @@ namespace Re
 			virtual void OnObjectDestroyed() = 0;
 
 			virtual World* GetWorld() const = 0;
+			virtual ReEngine* GetEngine() const = 0;
 		
 			virtual bool IsPendingDestroy() const;
 

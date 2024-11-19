@@ -5,7 +5,9 @@
 #include <RealEngine/Core/ReEngine.h>
 #include <RealEngine/Core/ReObject.h>
 
+#include "RealEngine/Core/Components/RCDisplayable.h"
 #include "RealEngine/Core/Components/RCTickable.h"
+#include "RealEngine/Renderer/Shapes/Square.h"
 
 
 class Tamere : public Re::ReObject {
@@ -13,6 +15,7 @@ class Tamere : public Re::ReObject {
 public:
 
 	Tamere(Re::ReEngine* engine) : ReObject(engine) {
+		SetTags({"Tameres", "Autre Tag"});
 	}
 
 	void Print() {
@@ -23,25 +26,46 @@ public:
 class Tonpere : public Re::ReObject{
 public:
 
-	Tonpere(Re::ReEngine* engine, Re::WindowHandler* inWindow, const std::string& inText) : ReObject(engine) {
+	Re::Square square;
+
+	Tonpere(Re::ReEngine* engine, Re::WindowHandler* inWindow, const std::string& inText) : ReObject(engine), square(0, 0, 10, 10, Re::RGBA::Red()) {
 		text = inText;
 		window = inWindow;
 	}
 
 	int testInt = 0;
-	
+	int testInt2 = 0;
+
 	void RegisterComponents(std::vector<Re::ReComponent*>& componentList) override
 	{
 		componentList.push_back(Re::ReComponent::Create<Re::RCTickable<Tonpere>>(this, &Tonpere::TickFunc));
 		//componentList.push_back(new Re::RCTickable(this, &Tonpere::TickFunc));
+		
+		componentList.push_back(Re::ReComponent::Create<Re::RCDisplayable<Tonpere>>(this, &Tonpere::DisplayFunc));
 
 		ReObject::RegisterComponents(componentList);
+	}
+
+	void Move(int x, int y)
+	{
+		square.Move(x, y);
 	}
 
 	void TickFunc()
 	{
 		std::cout << "Tickable Tick Custom lol | " << testInt << "\n";
 		testInt++;
+	}
+
+	void DisplayFunc(Re::Renderer* renderer)
+	{
+		std::cout << "RendererTick Custom lol" << "\n";
+			
+		renderer->RenderShape(square);
+		// renderer->SetColor(Re::RGBA{255, 0, 0, 255});
+		// SDL_Rect rect{m_x, m_y, 10, 10};
+		// renderer->RenderRect(rect);
+		// renderer->ReverseColor();
 	}
 
 	void Print() {
@@ -56,37 +80,26 @@ private:
 
 int main(int argc, char** argv) {
     
-    Re::WindowInfo wi;
+    Re::FWindowInfo wi;
     wi.width = 680;
     wi.height = 480;
 
 	Re::ReEngine engine;
 	Re::WindowHandler* window = engine.InitWindow(wi);
 	Re::Renderer* renderer = engine.GetRenderer();
+	
+	Re::RePtr<Re::ReObject> pTamere = engine.GetWorld()->InstantiateObject<Tamere>();
+	Re::RePtr<Tonpere> pTamere2 = Re::RePtr<Tonpere>(pTamere);
 
-    //Re::WindowHandler window (wi);
-	//SDL_Window* m_window = SDL_CreateWindow("Title", wi.posX, wi.posY, wi.width, wi.height, SDL_WINDOW_SHOWN);
-	//SDL_Renderer* m_renderer = SDL_CreateRenderer(m_window, 0, NULL);
-	int mx0 = 0;
-	int my0 = 0;
-	int mx1 = 0;
-	int my1 = 0;
-
-	// pTamere est bien initialis�
-	Re::RePtr<Tamere> pTamere = engine.GetWorld()->InstantiateObject<Tamere>();
-	// pTamere devient null, pTamere2 est bien initialis�???
-	// ok non alors le pb est dans InstantiateObject ou lors du return un ReMasterPtr est détruit et donc invalide les RePtr
-	Re::RePtr<Tamere> pTamere2 = Re::RePtr<Tamere>(pTamere);
-
+    for (auto element : pTamere->GetTags())
+    {
+	    std::cout << element << "\n";
+    }
 	pTamere->Destroy();
 
 	Re::RePtr<Tonpere> pTonpere = engine.GetWorld()->InstantiateObject<Tonpere>(window, "Je suis un obj");
-	//Re::RePtr<Re::ReObject> pTamere4 = Re::RePtr(pTamere3);
-	
-	// CA PRINT ALORS QUE C'EST NULL?????
-	// ça explique tjrs pas ça tho...
-	// Ok alors en fait c'est convertit en "extensions C#" avec le this en param donc tant que tu touches pas au truc c'est fine
-	if(pTamere.IsValid()) pTamere->Print();
+
+	if(pTamere.IsValid()) pTamere2->Print();
 
 	if (pTonpere.IsValid()) pTonpere->Print();
 
@@ -101,31 +114,21 @@ int main(int argc, char** argv) {
 			case SDL_QUIT:
 				close = true;
 				break;
-			case SDL_MOUSEBUTTONDOWN:
-				mx0 = event.button.x;
-				my0 = event.button.y;
-				break;
 			case SDL_KEYDOWN:
-				if (event.key.type == SDLK_a) {
+				if (event.key.keysym.sym == SDLK_DOWN) {
 					//delete pTamere;
+					pTonpere->Move(0, 1);
+				}else if (event.key.keysym.sym == SDLK_UP) {
+					//delete pTamere;
+					pTonpere->Move(0, -1);
+				}else if (event.key.keysym.sym == SDLK_LEFT) {
+					//delete pTamere;
+					pTonpere->Move(-1, 0);
+				}else if (event.key.keysym.sym == SDLK_RIGHT) {
+					//delete pTamere;
+					pTonpere->Move(1, 0);
 				}
 				break;
-			case SDL_MOUSEBUTTONUP:
-				mx1 = event.button.x;
-				my1 = event.button.y;
-
-				renderer->SetColor(Re::RGBA(0, 0, 255, 255));
-				//SDL_SetRenderDrawColor(window->GetRenderer(), 0, 0, 255, 255);
-				SDL_Rect r{};
-				r.x = mx0;
-				r.y = my0;
-				r.w = mx1 - mx0;
-				r.h = my1 - my0;
-
-				//SDL_RenderFillRect(window->GetRenderer(), &r);
-				renderer->RenderRect(r);
-				break;
-			
 			}
 		}
 
@@ -133,7 +136,6 @@ int main(int argc, char** argv) {
 
 		//SDL_RenderPresent(window->GetRenderer());
 		engine.Tick();
-		renderer->UpdateRenderer();
 
         SDL_Delay(1000 / 60);
     }

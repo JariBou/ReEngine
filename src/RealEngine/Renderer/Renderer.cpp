@@ -3,20 +3,42 @@
 
 namespace Re
 {
+    RGBA RGBA::Black()
+    {
+        return RGBA{.r= 0, .g= 0, .b= 0, .a= 255};
+    }
+
+    RGBA RGBA::Red()
+    {
+        return RGBA{.r= 255, .g= 0, .b= 0, .a= 255};
+    }
+
+    RGBA RGBA::White()
+    {
+        return RGBA{.r= 255, .g= 255, .b= 255, .a= 255};
+    }
+
     Renderer::Renderer(SDL_Window* window)
     {
         m_renderer = SDL_CreateRenderer(window, 0, NULL);
     }
 
-    void Renderer::RenderClear() const
+    void Renderer::RenderClear()
     {
+        SetColor(RGBA::Black());
         SDL_RenderClear(m_renderer);
+        ReverseColor();
     }
 
     void Renderer::UpdateRenderer() const
     {
 		SDL_RenderPresent(m_renderer);
 	}
+
+    void Renderer::RenderShape(Shape& shape)
+    {
+        shape.Render(this);
+    }
 
     void Renderer::SetColor(RGBA color)
     {
