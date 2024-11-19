@@ -18,6 +18,11 @@ namespace Re
         return RGBA{.r= 255, .g= 255, .b= 255, .a= 255};
     }
 
+    RGBA RGBA::Blue()
+    {
+        return RGBA{.r= 0, .g= 0, .b= 255, .a= 255};
+    }
+
     Renderer::Renderer(SDL_Window* window)
     {
         m_renderer = SDL_CreateRenderer(window, 0, NULL);
@@ -40,6 +45,11 @@ namespace Re
         shape.Render(this);
     }
 
+    void Renderer::RenderShape(Shape&& shape)
+    {
+        shape.Render(this);
+    }
+
     void Renderer::SetColor(RGBA color)
     {
 		m_prevColor = m_currentColor;
@@ -56,7 +66,7 @@ namespace Re
         return m_currentColor;
     }
 
-    void Renderer::RenderRect(SDL_Rect& rect)
+    void Renderer::RenderRect(SDL_Rect& rect) const
     {
         SDL_RenderFillRect(m_renderer, &rect);
     }

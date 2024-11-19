@@ -6,19 +6,19 @@
 #include "Shapes/Shape.h"
 
 class SDL_Renderer;
-class SDL_Rect;
 
 namespace Re
 {
 	struct RE_RENDERER_API RGBA {
-		int r = 0;
-		int g = 0;
-		int b = 0;
-		int a = 255;
+		uint8_t r = 0;
+		uint8_t g = 0;
+		uint8_t b = 0;
+		uint8_t a = 255;
 		
 		static RGBA Black();
 		static RGBA Red();
 		static RGBA White();
+		static RGBA Blue();
 	};
 
 	class RE_RENDERER_API Renderer
@@ -35,12 +35,13 @@ namespace Re
 			void RenderClear();
 			void UpdateRenderer() const;
 			void RenderShape(Shape& shape);
+			void RenderShape(Shape&& shape);
 
 			void SetColor(RGBA color);
 			void ReverseColor();
 			RGBA GetCurrentColor() const;
 
-			void RenderRect(SDL_Rect& rect);
+			void RenderRect(SDL_Rect& rect) const;
 
 		private:
 			SDL_Renderer* m_renderer;

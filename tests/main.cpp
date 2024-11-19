@@ -62,6 +62,7 @@ public:
 		std::cout << "RendererTick Custom lol" << "\n";
 			
 		renderer->RenderShape(square);
+		renderer->RenderShape(Re::Square(0, 0, 10, 10, Re::RGBA::Blue()));
 		// renderer->SetColor(Re::RGBA{255, 0, 0, 255});
 		// SDL_Rect rect{m_x, m_y, 10, 10};
 		// renderer->RenderRect(rect);
