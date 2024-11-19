@@ -40,9 +40,13 @@ namespace Re
         m_shouldTick = state;
     }
 
-    void ReComponent::DestroyComponent()
+    void ReComponent::Destroy()
     {
         //TODO
+    }
+
+    void ReComponent::OnObjectDestroyed()
+    {
     }
 
     void ReComponent::TickComponent()

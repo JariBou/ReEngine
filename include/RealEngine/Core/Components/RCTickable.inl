@@ -2,13 +2,13 @@
 
 namespace Re
 {
-    template <typename T>
-    RCTickable<T>::RCTickable(ReObject* owner, void(T::* func)()) : ReComponent(owner, -1)
+    ReObjectTemplate
+    RCTickable<T>::RCTickable(ReObject* owner, inTickFunc) : ReComponent(owner, -1)
     {
         m_tickFunc = func;
     }
 
-    template <typename T>
+    ReObjectTemplate
     void RCTickable<T>::TickComponent()
     {
         (GetOwnerAs<T>()->*m_tickFunc)();

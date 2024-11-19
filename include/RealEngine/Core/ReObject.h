@@ -4,6 +4,8 @@
 #include <RealEngine/Core/Export.h>
 #include <RealEngine/Core/ObjectHandling/ReHandledObject.h>
 
+#include "IWorldObject.h"
+
 
 namespace Re
 {
@@ -12,7 +14,7 @@ namespace Re
 	class World;
 	class RePtrData;
 
-	class RE_CORE_API ReObject : public ReHandledObject<ReObject>
+	class RE_CORE_API ReObject : public ReHandledObject<ReObject>, public IWorldObject
 	{
 		public:
 			ReObject(ReEngine* engine);
@@ -21,12 +23,17 @@ namespace Re
 			ReObject(ReObject&&) = delete;
 			~ReObject() override;
 		
-			void DestroyObject();
+#pragma region IWorldObject Methods
+
+			World* GetWorld() const override;
+		
+			void Destroy() override;
+			void OnObjectDestroyed() override;
+		
+#pragma endregion
 		
 			virtual void RegisterComponents(std::vector<ReComponent*>& componentList);
-		
-			World* GetWorld() const;
-		
+
 			ReObject& operator=(const ReObject&) = delete;
 			ReObject& operator=(ReObject&&) = delete;
 

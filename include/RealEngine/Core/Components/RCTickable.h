@@ -1,19 +1,21 @@
 #pragma once
 
 #include <RealEngine/Core/Export.h>
+#include <RealEngine/Core/Components/ReComponent.h>
 
-#include "ReComponent.h"
-#include <RealEngine/Core/ReObject.h>
-
-class Tonpere;
+#ifndef TickFuncDef
+#define inTickFunc void (T::*func)(/* maybe take in delta time in the future, idk */)
+#define varTickFunc void (T::*m_tickFunc)(/* maybe take in delta time in the future, idk */)
+#define TickFuncDef
+#endif
 
 namespace Re
 {
-	template<typename T>
+	ReObjectTemplate
 	class RCTickable : public ReComponent
 	{
 		public:
-			RCTickable(ReObject* owner, void (T::*func)(/* maybe take in delta time in the future, idk */));
+			RCTickable(ReObject* owner, inTickFunc);
 			RCTickable(const RCTickable&) = delete;
 			RCTickable(RCTickable&&) = delete;
 			~RCTickable() override = default;
@@ -24,8 +26,11 @@ namespace Re
 			RCTickable& operator=(RCTickable&&) = delete;
 
 		private:
-			void (T::*m_tickFunc)();
+			varTickFunc;
 	};
 }
 
 #include <RealEngine/Core/Components/RCTickable.inl>
+
+#undef inTickFunc
+#undef varTickFunc

@@ -9,8 +9,6 @@ namespace Re
 {
     World::World(ReEngine* inEngine) : m_engine(inEngine)
     {
-		m_objects.reserve(4);
-		// m_objectsV2.resize(4);
 	}
 
     void World::PhysicsTick()
@@ -19,11 +17,6 @@ namespace Re
 
     void World::Tick()
     {
-        // for(ReObject* var : m_objects)
-        // {
-        //     if (var->ShouldTick()) var->Tick();
-        // }
-
         for (auto& [object, componentList] : m_objectsMap)
         {
             for (ReComponent* component : componentList)
@@ -31,16 +24,7 @@ namespace Re
                 component->TickComponent();
             }
         }
-        
-		// for (ReMasterPtr<ReObject>& var : m_objectsV2)
-		// {
-		// 	if (var->ShouldTick()) var->Tick();
-		// }
 
-        // for (ReMasterPtr<ReObject>* var : m_objectsV2)
-        // {
-        //     if (var->Get()->ShouldTick()) var->Get()->Tick();
-        // }
         CollectGarbage();
     }
 
@@ -63,22 +47,19 @@ namespace Re
 
     void World::CollectGarbage()
     {
-        //TODO test garbage collector
-        // auto it = m_garbage.begin();
-        // while (it != m_garbage.end()) {
-        //     delete *it;
-        //     m_garbage.erase(it);
-        // }
         for (ReObject* obj : m_objectGarbage)
         {
             for (ReComponent* component : m_objectsMap[obj])
             {
+                component->OnObjectDestroyed();
                 delete component;
             }
             MapUtils::RemoveElementByKey(m_objectsMap, obj);
-            ArrayUtils::RemoveElement(m_objects, obj);
+            obj->OnObjectDestroyed();
             delete obj;
         }
+
+        m_objectGarbage.clear();
 
         for (ReComponent* component : m_componentGarbage)
         {
@@ -89,37 +70,8 @@ namespace Re
                 delete component;
             }
         }
-
         
-
-        if (m_objects.capacity() > 4)
-        {
-            size_t pow = 1;
-
-            while (m_objects.capacity()/(2 * pow) > m_objects.size())
-            {
-                pow *= 2;
-            }
-            if (pow > 1)
-            {
-                m_objects.reserve(m_objects.capacity()/pow);
-            }
-        }
-        
-        m_objectGarbage.clear();
-        m_objectGarbage.shrink_to_fit();
-        m_objectGarbage.reserve(16);
+        m_componentGarbage.clear();
     }
-
-    // template <Derived<ReObject> T>
-    // RePtr<ReObject> World::GetRePtrTo(ReObject* object)
-    // {
-    //     auto it = m_objectsV2.begin();
-    //     while (it != m_objectsV2.end())
-    //     {
-    //         if (*it == object) return RePtr(*it);
-    //     }
-    //     return nullptr;
-    // }
-
+    
 }

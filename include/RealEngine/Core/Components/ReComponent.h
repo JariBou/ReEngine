@@ -2,6 +2,7 @@
 
 #include <RealEngine/Core/Export.h>
 
+#include "RealEngine/Core/IWorldObject.h"
 #include "RealEngine/Core/ObjectHandling/ReHandledObject.h"
 
 
@@ -10,14 +11,14 @@ namespace Re
 	class ReObject;
 	class World;
 	
-	class RE_CORE_API ReComponent : public ReHandledObject<ReComponent>
+	class RE_CORE_API ReComponent : public ReHandledObject<ReComponent>, public IWorldObject
 	{
 		public:
 #pragma region Constructors
 			ReComponent(ReObject* owner, int priority);
 			ReComponent(const ReComponent&) = delete;
 			ReComponent(ReComponent&&) = delete;
-			virtual ~ReComponent() = default;
+			~ReComponent() override = default;
 #pragma endregion
 
 #pragma region Construction Methods
@@ -29,20 +30,25 @@ namespace Re
 		
 #pragma endregion
 
+#pragma region IWorldObject Methods
+
+			World* GetWorld() const override;
+			
+			void Destroy() override;
+			void OnObjectDestroyed() override;
+		
+#pragma endregion
+
 #pragma region Component Methods
 			RePtr<ReObject> GetOwner() const;
 
-			template<typename T>
+			ReObjectTemplate
 			T* GetOwnerAs() { return static_cast<T*>(m_owner); }
 
 			int GetPriority() const;
 
-			World* GetWorld() const;
-
 			bool ShouldTick() const;
 			void SetShouldTick(bool state);
-
-			virtual void DestroyComponent();
 		
 			virtual void TickComponent();
 #pragma endregion
@@ -50,6 +56,7 @@ namespace Re
 #pragma region Operators
 			ReComponent& operator=(const ReComponent&) = delete;
 			ReComponent& operator=(ReComponent&&) = delete;
+			
 #pragma endregion
 		
 		protected:

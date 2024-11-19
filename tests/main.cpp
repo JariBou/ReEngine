@@ -29,7 +29,7 @@ public:
 	}
 
 	int testInt = 0;
-
+	
 	void RegisterComponents(std::vector<Re::ReComponent*>& componentList) override
 	{
 		componentList.push_back(Re::ReComponent::Create<Re::RCTickable<Tonpere>>(this, &Tonpere::TickFunc));
@@ -77,6 +77,8 @@ int main(int argc, char** argv) {
 	// pTamere devient null, pTamere2 est bien initialis�???
 	// ok non alors le pb est dans InstantiateObject ou lors du return un ReMasterPtr est détruit et donc invalide les RePtr
 	Re::RePtr<Tamere> pTamere2 = Re::RePtr<Tamere>(pTamere);
+
+	pTamere->Destroy();
 
 	Re::RePtr<Tonpere> pTonpere = engine.GetWorld()->InstantiateObject<Tonpere>(window, "Je suis un obj");
 	//Re::RePtr<Re::ReObject> pTamere4 = Re::RePtr(pTamere3);

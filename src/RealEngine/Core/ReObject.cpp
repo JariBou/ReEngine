@@ -10,20 +10,31 @@ namespace Re
     {
     }
 
+    
+    /**
+     * USE ReObject::Destroy TO DESTROY A ReObject!!
+     */
     ReObject::~ReObject()
     {
         //GetWorld()->ScheduleDestroy(this);
     }
 
-    void ReObject::DestroyObject()
+    void ReObject::Destroy()
     {
+        m_isPendingDestroy = true;
         GetWorld()->ScheduleObjectDestroy(this);
     }
 
+    void ReObject::OnObjectDestroyed()
+    {
+    }
+
+
     /**
+     * Method called by World when creating the object.
      * You should always call ReObject::RegisterComponents at the end of your registerComponents unless you
      * want to manually reorder components
-     * @param componentList 
+     * @param componentList ref to the World's component std::vector
      */
     void ReObject::RegisterComponents(std::vector<ReComponent*>& componentList)
     {
@@ -37,4 +48,5 @@ namespace Re
     {
         return m_engine->GetWorld();
     }
+    
 }
