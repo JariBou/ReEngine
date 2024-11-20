@@ -3,8 +3,7 @@
 #include <RealEngine/Core/Export.h>
 
 #include "ReComponent.h"
-#include "Bases/InputListener.h"
-#include "RealEngine/Core/ReEngine.h"
+#include "Interfaces/InputListener.h"
 
 #ifndef EventFuncDef
 #define inEventFunc void (T::*func)(SDL_Event& /* maybe take in delta time in the future, idk */)
@@ -17,6 +16,7 @@ namespace Re
 	ReObjectTemplate
 	class RCInputReceiver : public ReComponent, public InputListener
 	{
+		//TODO: https://stackoverflow.com/questions/1252976/how-to-handle-multiple-keypresses-at-once-with-sdl
 		public:
 			RCInputReceiver(ReObject* owner, inEventFunc);
 			RCInputReceiver(const RCInputReceiver&) = delete;

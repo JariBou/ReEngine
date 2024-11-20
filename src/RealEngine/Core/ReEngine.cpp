@@ -1,7 +1,7 @@
 #include <SDL_timer.h>
 #include <RealEngine/Core/ReEngine.h>
 #include <RealEngine/Core/World.h>
-#include <RealEngine/Core/Components/Bases/InputListener.h>
+#include <RealEngine/Core/Components/Interfaces/InputListener.h>
 
 namespace Re
 {
