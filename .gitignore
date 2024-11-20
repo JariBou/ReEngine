@@ -7,4 +7,4 @@ vs*/*
 # MacOS Cache
 .DS_Store
 
-
+Builds/*

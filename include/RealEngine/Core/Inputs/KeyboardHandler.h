@@ -22,14 +22,14 @@ namespace Re
 	{
 		public:
 			KB_AxisName axisName;
-			std::vector<SDL_Keycode> keysNegative;
-			std::vector<SDL_Keycode> keysPositive;
+			std::vector<SDL_Scancode> keysNegative;
+			std::vector<SDL_Scancode> keysPositive;
 
 			AxisInfo(): axisName()
 			{
 			}
 
-			AxisInfo(KB_AxisName inAxisName, std::vector<SDL_Keycode>&& inKeysNegative, std::vector<SDL_Keycode>&& inKeysPositive) : axisName(inAxisName)
+			AxisInfo(KB_AxisName inAxisName, std::vector<SDL_Scancode>&& inKeysNegative, std::vector<SDL_Scancode>&& inKeysPositive) : axisName(inAxisName)
 			{
 				keysNegative = std::move(inKeysNegative);
 				keysPositive = std::move(inKeysPositive);
@@ -43,16 +43,16 @@ namespace Re
 		
 			void OnEventReceived(SDL_Event& event) override;
 
-			bool GetKeyState(SDL_Keycode key) const;
+			bool GetKeyState(SDL_Scancode key) const;
 
 			int GetAxis(KB_AxisName axisName) const;
 
 	
 		private:
 			int ProcessAxisDemand(const AxisInfo& axisInfo) const;
-			bool GetAxisKeysState(const std::vector<SDL_Keycode>& axisKeysList) const;
+			bool GetAxisKeysState(const std::vector<SDL_Scancode>& axisKeysList) const;
 		
-			std::map<SDL_Keycode, uint8_t> m_keyStateMap;
+			std::map<SDL_Scancode, uint8_t> m_keyStateMap;
 			std::map<KB_AxisName, AxisInfo> m_axisInfoMap;
 	};
 }
