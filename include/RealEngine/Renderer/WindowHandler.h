@@ -26,8 +26,9 @@ namespace Re
 			WindowHandler& operator=(WindowHandler&&) = delete;
 
 			void DestroyWindow();
+			void DestroyRenderer();
 
-			int PollEvent(SDL_Event& event);
+			static int PollEvent(SDL_Event& event);
 
 			SDL_Window* GetWindow() const;
 			const FWindowInfo& GetWindowInfo() const;

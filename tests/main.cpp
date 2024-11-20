@@ -6,8 +6,9 @@
 #include <RealEngine/Core/ReObject.h>
 
 #include "RealEngine/Core/Components/RCDisplayable.h"
-#include "RealEngine/Core/Components/RCInputReceiver.h"
+#include "RealEngine/Core/Components/RCSdlEventReceiver.h"
 #include "RealEngine/Core/Components/RCTickable.h"
+#include "RealEngine/Core/Inputs/KeyboardHandler.h"
 #include "RealEngine/Renderer/Shapes/Square.h"
 
 
@@ -26,6 +27,7 @@ public:
 
 class Tonpere : public Re::ReObject{
 public:
+	
 
 	Re::Square square;
 
@@ -39,12 +41,13 @@ public:
 
 	void RegisterComponents(std::vector<Re::ReComponent*>& componentList) override
 	{
-		componentList.push_back(Re::ReComponent::Create<Re::RCTickable<Tonpere>>(this, &Tonpere::TickFunc));
+		using namespace Re;
+		componentList.push_back(ReComponent::Create<RCTickable<Tonpere>>(this, &Tonpere::TickFunc));
 		//componentList.push_back(new Re::RCTickable(this, &Tonpere::TickFunc));
 		
-		componentList.push_back(Re::ReComponent::Create<Re::RCDisplayable<Tonpere>>(this, &Tonpere::DisplayFunc));
+		componentList.push_back(ReComponent::Create<RCDisplayable<Tonpere>>(this, &Tonpere::DisplayFunc));
 		
-		componentList.push_back(Re::ReComponent::Create<Re::RCInputReceiver<Tonpere>>(this, &Tonpere::InputEventFunc));
+		//componentList.push_back(Re::ReComponent::Create<Re::RCSdlEventReceiver<Tonpere>>(this, &Tonpere::InputEventFunc));
 
 		ReObject::RegisterComponents(componentList);
 	}
@@ -56,13 +59,16 @@ public:
 
 	void TickFunc()
 	{
-		std::cout << "Tickable Tick Custom lol | " << testInt << "\n";
+		Move(GetEngine()->GetKbHandler()->GetAxis(Re::KB_AxisName::Horizontal), GetEngine()->GetKbHandler()->GetAxis(Re::KB_AxisName::Vertical));
+		
+		//std::cout << "Tickable Tick Custom lol | " << testInt << "\n";
+		
 		testInt++;
 	}
 
 	void DisplayFunc(Re::Renderer* renderer)
 	{
-		std::cout << "RendererTick Custom lol" << "\n";
+		//std::cout << "RendererTick Custom lol" << "\n";
 			
 		renderer->RenderShape(square);
 		renderer->RenderShape(Re::Square(0, 0, 10, 10, Re::RGBA::Blue()), 0);
@@ -74,6 +80,7 @@ public:
 
 	void InputEventFunc(SDL_Event& event)
 	{
+		event.key.state = SDL_PRESSED or SDL_RELEASED;
 		switch (event.type)
 		{
 		case SDL_KEYDOWN:

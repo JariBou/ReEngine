@@ -1,3 +1,4 @@
+#include <iostream>
 #include <RealEngine/Renderer/Renderer.h>
 #include <SDL2/SDL.h>
 
@@ -40,9 +41,17 @@ namespace Re
     void Renderer::RenderClear()
     {
         SetColor(RGBA{.r= 0, .g= 0, .b= 0, .a= 0});
+        //TODO: Resizable
+        // for (size_t i = -1; i < m_renderLayers.size(); ++i)
+        // {
+        //     SDL_Texture* texture = m_renderLayers.at(static_cast<int>(i));
+        //     SDL_DestroyTexture(texture);
+        //     m_renderLayers.erase(static_cast<int>(i));
+        // }
         for (auto& [_, renderText] : m_renderLayers)
         {
             SDL_SetRenderTarget(m_renderer, renderText);
+            SDL_DestroyTexture(renderText);
             SDL_RenderClear(m_renderer);
         }
         ReverseColor();
@@ -81,6 +90,10 @@ namespace Re
     {
         if (!m_renderLayers.contains(layer))
         {
+            // int width;
+            // int height;
+            // SDL_GetWindowSize(m_windowHandler->GetWindow(), &pute, &salope);
+            // std::cout << width << " | " << height << std::endl;
             SDL_Texture* texture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
                                                       GetWindowInfo().width, GetWindowInfo().height);
             //TODO: create texture

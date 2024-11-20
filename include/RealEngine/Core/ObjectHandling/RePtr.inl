@@ -1,4 +1,3 @@
-#include "RePtr.h"
 #pragma once
 
 namespace Re

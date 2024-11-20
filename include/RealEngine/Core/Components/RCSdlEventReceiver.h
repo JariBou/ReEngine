@@ -3,7 +3,7 @@
 #include <RealEngine/Core/Export.h>
 
 #include "ReComponent.h"
-#include "Interfaces/InputListener.h"
+#include "Interfaces/SdlEventListener.h"
 
 #ifndef EventFuncDef
 #define inEventFunc void (T::*func)(SDL_Event& /* maybe take in delta time in the future, idk */)
@@ -14,17 +14,17 @@
 namespace Re
 {
 	ReObjectTemplate
-	class RCInputReceiver : public ReComponent, public InputListener
+	class RCSdlEventReceiver : public ReComponent, public SdlEventListener
 	{
 		//TODO: https://stackoverflow.com/questions/1252976/how-to-handle-multiple-keypresses-at-once-with-sdl
 		public:
-			RCInputReceiver(ReObject* owner, inEventFunc);
-			RCInputReceiver(const RCInputReceiver&) = delete;
-			RCInputReceiver(RCInputReceiver&&) = delete;
-			~RCInputReceiver() override = default;
+			RCSdlEventReceiver(ReObject* owner, inEventFunc);
+			RCSdlEventReceiver(const RCSdlEventReceiver&) = delete;
+			RCSdlEventReceiver(RCSdlEventReceiver&&) = delete;
+			~RCSdlEventReceiver() override = default;
 
-			RCInputReceiver& operator=(const RCInputReceiver&) = delete;
-			RCInputReceiver& operator=(RCInputReceiver&&) = delete;
+			RCSdlEventReceiver& operator=(const RCSdlEventReceiver&) = delete;
+			RCSdlEventReceiver& operator=(RCSdlEventReceiver&&) = delete;
 		
 			/**
 			 * You should Always call this in children unless you want to override the Creation behaviour
@@ -38,5 +38,5 @@ namespace Re
 	};
 }
 
-#include <RealEngine/Core/Components/RCInputReceiver.inl>
+#include <RealEngine/Core/Components/RCSdlEventReceiver.inl>
 

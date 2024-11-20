@@ -1,11 +1,11 @@
 #pragma once
 
-#include <SDL_events.h>
 #include <RealEngine/Core/Export.h>
+#include <SDL_events.h>
 
 namespace Re
 {
-	class RE_CORE_API InputListener
+	class RE_CORE_API SdlEventListener
 	{
 		public:
 			

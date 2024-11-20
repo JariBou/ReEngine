@@ -9,6 +9,7 @@ namespace Re
 
 		m_windowInfo = windowInfo;
 		m_window = SDL_CreateWindow("Title", windowInfo.posX, windowInfo.posY, windowInfo.width, windowInfo.height, SDL_WINDOW_SHOWN);
+		// SDL_SetWindowResizable(m_window, SDL_TRUE);
 		m_renderer = new Renderer(this);
 	}
 
@@ -20,6 +21,13 @@ namespace Re
 	void WindowHandler::DestroyWindow()
 	{
 		SDL_DestroyWindow(m_window);
+		m_window = nullptr;
+	}
+
+	void WindowHandler::DestroyRenderer()
+	{
+		delete m_renderer;
+		m_renderer = nullptr;
 	}
 
 	int WindowHandler::PollEvent(SDL_Event& event)
