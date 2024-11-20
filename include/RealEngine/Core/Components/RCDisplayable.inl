@@ -6,6 +6,7 @@ namespace Re
     RCDisplayable<T>::RCDisplayable(ReObject* owner, inDisplayFunc) : ReComponent(owner, -1)
     {
         m_displayFunc = func;
+        SetShouldTick(true);
     }
 
     ReObjectTemplate

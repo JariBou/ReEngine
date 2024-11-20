@@ -6,6 +6,7 @@
 #include <RealEngine/Core/ReObject.h>
 
 #include "RealEngine/Core/Components/RCDisplayable.h"
+#include "RealEngine/Core/Components/RCInputReceiver.h"
 #include "RealEngine/Core/Components/RCTickable.h"
 #include "RealEngine/Renderer/Shapes/Square.h"
 
@@ -42,6 +43,8 @@ public:
 		//componentList.push_back(new Re::RCTickable(this, &Tonpere::TickFunc));
 		
 		componentList.push_back(Re::ReComponent::Create<Re::RCDisplayable<Tonpere>>(this, &Tonpere::DisplayFunc));
+		
+		componentList.push_back(Re::ReComponent::Create<Re::RCInputReceiver<Tonpere>>(this, &Tonpere::InputEventFunc));
 
 		ReObject::RegisterComponents(componentList);
 	}
@@ -67,6 +70,24 @@ public:
 		// SDL_Rect rect{m_x, m_y, 10, 10};
 		// renderer->RenderRect(rect);
 		// renderer->ReverseColor();
+	}
+
+	void InputEventFunc(SDL_Event& event)
+	{
+		switch (event.type)
+		{
+		case SDL_KEYDOWN:
+			if (event.key.keysym.sym == SDLK_DOWN) {
+				Move(0, 1);
+			}else if (event.key.keysym.sym == SDLK_UP) {
+				Move(0, -1);
+			}else if (event.key.keysym.sym == SDLK_LEFT) {
+				Move(-1, 0);
+			}else if (event.key.keysym.sym == SDLK_RIGHT) {
+				Move(1, 0);
+			}
+			break;
+		}
 	}
 
 	void Print() {
@@ -106,42 +127,7 @@ int main(int argc, char** argv) {
 
 	if (pTonpere.IsValid()) pTonpere->Print();
 
-    bool close = false;
-    while (!close) {
-		//SDL_RenderClear(m_renderer);
-
-        SDL_Event event;
-		while (window->PollEvent(event)) {
-			switch (event.type)
-			{
-			case SDL_QUIT:
-				close = true;
-				break;
-			case SDL_KEYDOWN:
-				if (event.key.keysym.sym == SDLK_DOWN) {
-					//delete pTamere;
-					pTonpere->Move(0, 1);
-				}else if (event.key.keysym.sym == SDLK_UP) {
-					//delete pTamere;
-					pTonpere->Move(0, -1);
-				}else if (event.key.keysym.sym == SDLK_LEFT) {
-					//delete pTamere;
-					pTonpere->Move(-1, 0);
-				}else if (event.key.keysym.sym == SDLK_RIGHT) {
-					//delete pTamere;
-					pTonpere->Move(1, 0);
-				}
-				break;
-			}
-		}
-
-
-
-		//SDL_RenderPresent(window->GetRenderer());
-		engine.Tick();
-
-        SDL_Delay(1000 / 60);
-    }
+	engine.Start();
 
 	window->DestroyWindow();
 	//SDL_DestroyWindow(m_window);

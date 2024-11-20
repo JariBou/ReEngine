@@ -36,7 +36,7 @@ namespace Re
     {
         return GetWorld()->GetEngine();
     }
-
+    
     bool ReComponent::ShouldTick() const
     {
         return m_shouldTick;

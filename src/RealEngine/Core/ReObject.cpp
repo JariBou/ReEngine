@@ -38,6 +38,10 @@ namespace Re
      */
     void ReObject::RegisterComponents(std::vector<ReComponent*>& componentList)
     {
+        for (ReComponent* element : componentList)
+        {
+            if (!element->IsCreated()) element->OnObjectCreated(); 
+        }
         std::ranges::sort(componentList,[](const ReComponent* compA, const ReComponent* compB)
         {
             return compA->GetPriority() > compB->GetPriority();

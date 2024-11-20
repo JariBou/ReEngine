@@ -26,7 +26,7 @@ namespace Re
         {
             for (ReComponent* component : componentList)
             {
-                component->TickComponent();
+                if (component->ShouldTick()) component->TickComponent();
             }
         }
 

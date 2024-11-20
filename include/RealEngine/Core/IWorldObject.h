@@ -21,6 +21,8 @@ namespace Re
 			virtual void Destroy() = 0;
 			virtual void OnObjectDestroyed() = 0;
 
+			virtual bool IsCreated();
+		
 			virtual World* GetWorld() const = 0;
 			virtual ReEngine* GetEngine() const = 0;
 		
@@ -30,6 +32,7 @@ namespace Re
 			IWorldObject& operator=(IWorldObject&&) = delete;
 
 		protected:
+			bool m_isCreated = false;
 			bool m_isPendingDestroy = false;
 	};
 }

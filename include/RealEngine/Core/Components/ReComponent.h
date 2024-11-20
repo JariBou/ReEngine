@@ -24,7 +24,7 @@ namespace Re
 
 #pragma region Construction Methods
 		public:
-			template<typename T, typename... Args>
+			template<DerivedFrom<ReComponent> T, typename... Args>
 			static T* Create(Args&&... constructionParams);
 
 			ReComponent* SetPriority(int priority);
@@ -35,7 +35,7 @@ namespace Re
 		public:
 			World* GetWorld() const override;
 			ReEngine* GetEngine() const override;
-			
+
 			void Destroy() override;
 			void OnObjectDestroyed() override;
 		
@@ -69,11 +69,12 @@ namespace Re
 			int m_priority = false;
 			bool m_shouldTick = false;
 };
-
-	template <typename T, typename ... Args>
+	
+	template <DerivedFrom<ReComponent> T, typename ... Args>
 	T* ReComponent::Create(Args&&... constructionParams)
 	{
 		T* newComp = new T(std::forward<Args>(constructionParams)...);
+		newComp->OnObjectCreated();
 		return newComp;
 	}
 }

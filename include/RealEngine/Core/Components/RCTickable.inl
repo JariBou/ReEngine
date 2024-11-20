@@ -6,6 +6,7 @@ namespace Re
     RCTickable<T>::RCTickable(ReObject* owner, inTickFunc) : ReComponent(owner, -1)
     {
         m_tickFunc = func;
+        SetShouldTick(true);
     }
 
     ReObjectTemplate
