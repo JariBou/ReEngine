@@ -1,6 +1,5 @@
 #pragma once
 
-#include <string>
 #include <vector>
 #include <RealEngine/Core/Export.h>
 #include <RealEngine/Core/ObjectHandling/ReHandledObject.h>

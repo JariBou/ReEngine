@@ -1,6 +1,5 @@
 #pragma once
 
-#include <stdarg.h>
 #include <string>
 #include <vector>
 #include <RealEngine/Core/Export.h>

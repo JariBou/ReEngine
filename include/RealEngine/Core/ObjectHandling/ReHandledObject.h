@@ -1,6 +1,5 @@
 #pragma once
 
-#include <RealEngine/Core/Export.h>
 #include <RealEngine/Core/ObjectHandling/ReHandleData.h>
 
 namespace Re

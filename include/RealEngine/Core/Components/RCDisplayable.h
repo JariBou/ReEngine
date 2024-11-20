@@ -3,7 +3,6 @@
 #include <RealEngine/Core/Export.h>
 
 #include "ReComponent.h"
-#include <RealEngine/Core/ReEngine.h>
 
 #ifndef DisplayFuncDef
 // namespace Re

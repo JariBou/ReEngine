@@ -31,9 +31,9 @@ namespace Re
 		return m_world;
 	}
 
-	const KeyboardHandler* ReEngine::GetKbHandler() const
+	RePtr<KeyboardEventHandler> ReEngine::GetKbHandler() const
 	{
-			return m_keyboardHandler;
+			return RePtr(m_keyboardHandler);
 	}
 
 	void ReEngine::Start()
@@ -89,9 +89,22 @@ namespace Re
 	{
 	}
 
+	void ReEngine::SetNewKeyboardHandler(KeyboardEventHandler* handler)
+	{
+		if (m_keyboardHandler != nullptr) UnregisterInputEventListener(m_keyboardHandler);
+		m_keyboardHandler = handler;
+		RegisterInputEventListener(m_keyboardHandler);
+	}
+
 	void ReEngine::RegisterInputEventListener(SdlEventListener* inputReceiver)
 	{
 		m_inputListeners.push_back(inputReceiver);
 	}
-	
+
+	void ReEngine::UnregisterInputEventListener(SdlEventListener* inputReceiver, bool autoDelete)
+	{
+		auto it = std::ranges::find(m_inputListeners, inputReceiver);
+		if (it != m_inputListeners.end()) m_inputListeners.erase(it);
+		if (autoDelete) delete inputReceiver;
+	}
 }

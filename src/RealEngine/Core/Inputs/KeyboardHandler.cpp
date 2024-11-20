@@ -1,14 +1,15 @@
-#include <algorithm>
-#include <iostream>
-#include <ostream>
 #include <RealEngine/Core/Inputs/KeyboardHandler.h>
+#include <algorithm>
 
 namespace Re
 {
     KeyboardHandler::KeyboardHandler()
     {
-        m_axisInfoMap[KB_AxisName::Horizontal] = AxisInfo(KB_AxisName::Horizontal, {SDL_SCANCODE_LEFT, SDL_SCANCODE_A}, {SDL_SCANCODE_RIGHT, SDL_SCANCODE_D});
-        m_axisInfoMap[KB_AxisName::Vertical] = AxisInfo(KB_AxisName::Vertical, {SDL_SCANCODE_UP, SDL_SCANCODE_W}, {SDL_SCANCODE_DOWN, SDL_SCANCODE_S});
+        // m_axisInfoMap[KB_AxisName::Horizontal] = AxisInfo(KB_AxisName::Horizontal, {SDL_SCANCODE_LEFT, SDL_SCANCODE_A}, {SDL_SCANCODE_RIGHT, SDL_SCANCODE_D});
+        // m_axisInfoMap[KB_AxisName::Vertical] = AxisInfo(KB_AxisName::Vertical, {SDL_SCANCODE_UP, SDL_SCANCODE_W}, {SDL_SCANCODE_DOWN, SDL_SCANCODE_S});
+
+        KeyboardHandler::RegisterAxisInfo(KB_AxisName::Horizontal, AxisInfo(KB_AxisName::Horizontal, {SDL_SCANCODE_LEFT, SDL_SCANCODE_A}, {SDL_SCANCODE_RIGHT, SDL_SCANCODE_D}));
+        KeyboardHandler::RegisterAxisInfo(KB_AxisName::Vertical, AxisInfo(KB_AxisName::Vertical, {SDL_SCANCODE_UP, SDL_SCANCODE_W}, {SDL_SCANCODE_DOWN, SDL_SCANCODE_S}));
     }
 
     void KeyboardHandler::OnEventReceived(SDL_Event& event)
@@ -23,13 +24,13 @@ namespace Re
         return false;
     }
 
-    int KeyboardHandler::GetAxis(KB_AxisName axisName) const
+    float KeyboardHandler::GetAxis(KB_AxisName axisName) const
     {
         if (m_axisInfoMap.contains(axisName)) return ProcessAxisDemand(m_axisInfoMap.at(axisName));
         return 0;
     }
 
-    int KeyboardHandler::ProcessAxisDemand(const AxisInfo& axisInfo) const
+    float KeyboardHandler::ProcessAxisDemand(const AxisInfo& axisInfo) const
     {
         bool neg = GetAxisKeysState(axisInfo.keysNegative);
         bool pos = GetAxisKeysState(axisInfo.keysPositive);
@@ -45,5 +46,15 @@ namespace Re
         //     if (GetKeyState(keycode)) return true;
         // }
         // return false;
+    }
+
+    void KeyboardHandler::RegisterAxisInfo(KB_AxisName axisName, AxisInfo& inAxisInfo)
+    {
+        m_axisInfoMap[axisName] = inAxisInfo;
+    }
+
+    void KeyboardHandler::RegisterAxisInfo(KB_AxisName axisName, AxisInfo&& inAxisInfo)
+    {
+        m_axisInfoMap[axisName] = std::move(inAxisInfo);
     }
 }

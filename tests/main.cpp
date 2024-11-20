@@ -59,7 +59,7 @@ public:
 
 	void TickFunc()
 	{
-		Move(GetEngine()->GetKbHandler()->GetAxis(Re::KB_AxisName::Horizontal), GetEngine()->GetKbHandler()->GetAxis(Re::KB_AxisName::Vertical));
+		Move(GetEngine()->GetKbHandler()->GetAxis<int>(Re::KB_AxisName::Horizontal), GetEngine()->GetKbHandler()->GetAxis<int>(Re::KB_AxisName::Vertical));
 		
 		//std::cout << "Tickable Tick Custom lol | " << testInt << "\n";
 		

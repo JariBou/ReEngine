@@ -7,12 +7,8 @@
 
 namespace Re
 {
-	class KeyboardHandler;
-}
-
-namespace Re
-{
 	class SdlEventListener;
+	class KeyboardEventHandler;
 
 	class RE_CORE_API ReEngine
 	{
@@ -29,7 +25,7 @@ namespace Re
 			Renderer* GetRenderer() const;
 		
 			inline World* GetWorld() const;
-			inline const KeyboardHandler* GetKbHandler() const;
+			inline RePtr<KeyboardEventHandler> GetKbHandler() const;
 
 			void Start();
 			void Stop() const;
@@ -41,8 +37,13 @@ namespace Re
 			void Update();
 			void PhysicsUpdate();
 #pragma endregion
-		
+
+		public:
+			void SetNewKeyboardHandler(KeyboardEventHandler* handler);
+					
 			void RegisterInputEventListener(SdlEventListener* inputReceiver);
+		
+			void UnregisterInputEventListener(SdlEventListener* inputReceiver, bool autoDelete = true);
 
 		private:
 			WindowHandler* m_windowHandler = nullptr;
@@ -53,7 +54,7 @@ namespace Re
 			std::vector<SdlEventListener*> m_inputListeners;
 			uint8_t m_targetFramerate = 60;
 
-			KeyboardHandler* m_keyboardHandler;
+			KeyboardEventHandler* m_keyboardHandler;
 
 	};
 
