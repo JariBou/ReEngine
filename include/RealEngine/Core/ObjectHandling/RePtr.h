@@ -70,8 +70,8 @@ namespace Re
 		
 			explicit operator bool() const; // don't really understand the explicit thing but Rider says so... and Rider is usually right while I'm not
 		
-			RePtr& operator=(const RePtr&) = delete;
-			RePtr& operator=(RePtr&&) = delete;
+			RePtr& operator=(const RePtr& other);
+			RePtr& operator=(RePtr&& other) noexcept;
 
 #pragma endregion
 		

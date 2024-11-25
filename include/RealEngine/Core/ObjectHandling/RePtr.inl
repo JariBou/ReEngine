@@ -189,6 +189,18 @@ namespace Re
 		return IsValid();
 	}
 
+	template <typename T>
+	RePtr<T>& RePtr<T>::operator=(const RePtr& other) : m_data(other.m_data)
+	{
+		return *this;
+	}
+
+	template <typename T>
+	RePtr<T>& RePtr<T>::operator=(RePtr&& other) noexcept : m_data(std::move(other.m_data))
+	{
+		return *this;
+	}
+
 	// template <typename T>
 	// template <BaseOf<T> U>
 	// RePtr<U>& RePtr<T>::operator=(const RePtr<U>&)
