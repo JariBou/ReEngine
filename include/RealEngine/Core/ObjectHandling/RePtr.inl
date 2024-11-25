@@ -192,6 +192,7 @@ namespace Re
 	template <typename T>
 	RePtr<T>& RePtr<T>::operator=(const RePtr& other) : m_data(other.m_data)
 	{
+		if (this == other) return *this;
 		return *this;
 	}
 

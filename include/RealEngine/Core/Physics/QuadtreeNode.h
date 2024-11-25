@@ -20,6 +20,7 @@ namespace Re
 
 			void TryMerge();
 			void DoMerge();
+			void ClearNodes();
 
 			uint8_t GetChildrenObjectsNumber() const;
 			uint8_t GetChildrenNodesNumber() const;

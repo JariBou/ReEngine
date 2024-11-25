@@ -51,9 +51,15 @@ namespace Re
             for (const std::shared_ptr<QuadtreeNode>& childrenNode : m_childrenNodes)
             {
                 m_childrenObjects.insert(m_childrenObjects.begin(), childrenNode->m_childrenObjects.begin(), childrenNode->m_childrenObjects.end());
+                childrenNode->ClearNodes();
             }
         }
 
+    }
+
+    void QuadtreeNode::ClearNodes()
+    {
+        m_childrenNodes.clear();
     }
 
     uint8_t QuadtreeNode::GetChildrenObjectsNumber() const
@@ -70,6 +76,7 @@ namespace Re
     {
     }
 
+    // Wtf why no error on self assignment thing like in RePtr?
     QuadtreeNode& QuadtreeNode::operator=(const QuadtreeNode& other) : m_childrenObjects(other.m_childrenObjects),
                                                                        m_childrenNodes(other.m_childrenNodes)
     {
