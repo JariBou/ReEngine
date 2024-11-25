@@ -50,6 +50,9 @@ namespace Re
 
 			void RenderRect(SDL_Rect& rect) const;
 
+		//TODO: Create texture:
+		// SDL_Texture* texture = IMG_LoadTexture(renderer, "FILE");
+
 		private:
 			SDL_Renderer* m_renderer;
 			WindowHandler* m_windowHandler;

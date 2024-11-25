@@ -92,8 +92,9 @@ namespace Re
         {
             // int width;
             // int height;
-            // SDL_GetWindowSize(m_windowHandler->GetWindow(), &pute, &salope);
+            // SDL_GetWindowSize(m_windowHandler->GetWindow(), &width, &height);
             // std::cout << width << " | " << height << std::endl;
+            
             SDL_Texture* texture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
                                                       GetWindowInfo().width, GetWindowInfo().height);
             //TODO: create texture
@@ -128,6 +129,7 @@ namespace Re
 		m_currentColor = m_prevColor;
 		SDL_SetRenderDrawColor(m_renderer, m_currentColor.r, m_currentColor.g, m_currentColor.b, m_currentColor.a);
 	}
+    
     RGBA Renderer::GetCurrentColor() const
     {
         return m_currentColor;
