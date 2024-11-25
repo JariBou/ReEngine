@@ -9,26 +9,41 @@ namespace Re
 {
 	class ReObject;
 
+	//TODO: All RePtr<ReObject> will change to RePtr<PhysicalComponent> or smth like that
+
 	class RE_CORE_API Quadtree
 	{
 		public:
-			Quadtree() = default;
+			Quadtree(uint8_t maxObjectsPerNode);
 			Quadtree(const Quadtree&) = delete;
 			Quadtree(Quadtree&&) = delete;
-			~Quadtree() = default;
+			~Quadtree();
 
-			void Rebuild();
-			void RebuildAsync();
-
+			void AddObject(const RePtr<ReObject> obj);
+		
 			Quadtree& operator=(const Quadtree&) = delete;
 			Quadtree& operator=(Quadtree&&) = delete;
 
 		private:
+			uint8_t m_maxObjectsPerNode;
+		
 			QuadtreeNode root;
-			std::thread m_rebuild_thread;
+			std::thread m_rebuildThread;
 
-			bool m_wants_to_rebuild;
-			bool m_is_rebuilding;
+#pragma region Rebuilding
+		public:
+			void Rebuild();
+			void RebuildAsync();
+
+			void LockRoot();
+			void UnlockRoot();
+		
+		private:
+			std::vector<RePtr<ReObject>> m_addedObjects;
+			bool m_wantsToRebuild;
+			bool m_isRebuilding;
+			bool m_isRootLocked;
+#pragma endregion
 	};
 }
 

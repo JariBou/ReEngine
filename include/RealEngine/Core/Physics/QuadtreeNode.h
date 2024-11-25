@@ -13,14 +13,25 @@ namespace Re
 	{
 		public:
 			QuadtreeNode();
+			explicit QuadtreeNode(uint8_t maxObjectsPerNode);
 			QuadtreeNode(const QuadtreeNode& other);
-			QuadtreeNode(QuadtreeNode&&) = delete;
+			QuadtreeNode(QuadtreeNode&& other) noexcept;
 			~QuadtreeNode() override = default;
+
+			void TryMerge();
+			void DoMerge();
+
+			uint8_t GetChildrenObjectsNumber() const;
+			uint8_t GetChildrenNodesNumber() const;
+		
+			void AddObject(const RePtr<ReObject>& obj);
 		
 			QuadtreeNode& operator=(const QuadtreeNode& other);
 			QuadtreeNode& operator=(QuadtreeNode&& other) noexcept;
 
 		private:
+			uint8_t m_maxObjectsPerNode;
+		
 			// Actually should be a physics comp but we don't have one yet
 			std::vector<RePtr<ReObject>> m_childrenObjects;
 			// std::shared_ptr because we want to easily copy another tree
