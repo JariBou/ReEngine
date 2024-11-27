@@ -1,3 +1,4 @@
+#include "RePtr.h"
 #pragma once
 
 namespace Re
@@ -184,24 +185,114 @@ namespace Re
 	// }
 
 	template<typename T>
-	Re::RePtr<T>::operator bool() const
+	RePtr<T>::operator bool() const
 	{
 		return IsValid();
 	}
 
 	template <typename T>
-	RePtr<T>& RePtr<T>::operator=(const RePtr& other) : m_data(other.m_data)
+	RePtr<T>& RePtr<T>::operator=(const RePtr& other)
 	{
-		if (this == other) return *this;
+		if (this == &other) return *this;
+		m_data = other.m_data;
 		return *this;
 	}
 
 	template <typename T>
-	RePtr<T>& RePtr<T>::operator=(RePtr&& other) noexcept : m_data(std::move(other.m_data))
+	RePtr<T>& RePtr<T>::operator=(RePtr&& other) noexcept
 	{
+		m_data = std::move(other.m_data);
 		return *this;
 	}
 
+	template <typename T>
+	bool RePtr<T>::operator==(std::nullptr_t Null) const
+	{
+		return m_data->object == Null;
+	}
+
+	#pragma region Operator ==
+	template <typename T>
+	bool RePtr<T>::operator==(RePtr& other) const
+	{
+		return other.m_data == this->m_data;
+	}
+
+	template<typename T>
+	bool RePtr<T>::operator!=(RePtr& other) const
+	{
+		return !(other == *this);
+	}
+
+	template<typename T>
+	bool RePtr<T>::operator==(const RePtr& other) const
+	{
+		return other.m_data == this->m_data;
+	}
+
+	template <typename T>
+	bool RePtr<T>::operator!=(const RePtr& other) const
+	{
+		return !(other == this);
+	}
+
+	template <typename T>
+	template <DerivedFrom<T> U>
+	bool RePtr<T>::operator==(RePtr<U>& other) const
+	{
+		return other.m_data == this->m_data;
+	}
+
+	template <typename T>
+	template <DerivedFrom<T> U>
+	bool RePtr<T>::operator!=(RePtr<U>& other) const
+	{
+		return !(*this == other);
+	}
+
+	template <typename T>
+	template <DerivedFrom<T> U>
+	bool RePtr<T>::operator==(const RePtr<U>& other) const
+	{
+			return other.m_data == this->m_data;
+	}
+
+	template <typename T>
+	template <DerivedFrom<T> U>
+	bool RePtr<T>::operator!=(const RePtr<U>& other) const
+	{
+		return !(*this == other);
+	}
+
+	template <typename T>
+	template <BaseOf<T> U>
+	bool RePtr<T>::operator==(RePtr<U>& other) const
+	{
+		return other.m_data == this->m_data;
+	}
+
+	template <typename T>
+	template <BaseOf<T> U>
+	bool RePtr<T>::operator!=(RePtr<U>& other) const
+	{
+		return !(*this == other);
+	}
+
+	template <typename T>
+	template <BaseOf<T> U>
+	bool RePtr<T>::operator==(const RePtr<U>& other) const
+	{
+		return other.m_data == this->m_data;
+	}
+
+	template <typename T>
+	template <BaseOf<T> U>
+	bool RePtr<T>::operator!=(const RePtr<U>& other) const
+	{
+		return !(*this == other);
+	}
+#pragma endregion
+	
 	// template <typename T>
 	// template <BaseOf<T> U>
 	// RePtr<U>& RePtr<T>::operator=(const RePtr<U>&)

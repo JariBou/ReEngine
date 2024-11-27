@@ -10,7 +10,7 @@ namespace Re
 
     Quadtree::~Quadtree()
     {
-        if (m_isRebuilding) m_rebuildThread.join();
+        // if (m_isRebuilding) m_rebuildThread.join();
     }
 
     void Quadtree::AddObject(const RePtr<ReObject> obj)
@@ -19,14 +19,21 @@ namespace Re
         if (!m_isRootLocked) root.AddObject(obj);
     }
 
+    void Quadtree::RemoveObject(const RePtr<ReObject> obj)
+    {
+        if (m_isRebuilding) m_removedObjects.push_back(obj);
+        if (!m_isRootLocked) root.RemoveObject(obj);
+    }
+
     void Quadtree::Rebuild()
     {
         m_isRebuilding = true;
         m_wantsToRebuild = false;
 
-        QuadtreeNode newNode = QuadtreeNode();
-
+        QuadtreeNode newNode = QuadtreeNode(root);
         //TODO
+        newNode.TryMerge();
+
         LockRoot();
         root = newNode;
         UnlockRoot();
@@ -42,7 +49,7 @@ namespace Re
             m_wantsToRebuild = true;
             return;
         }
-        m_rebuildThread = std::thread(Rebuild);
+        // m_rebuildThread = std::thread(&Quadtree::Rebuild, this);
     }
 
     void Quadtree::LockRoot()

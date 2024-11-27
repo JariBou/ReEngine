@@ -2,12 +2,15 @@
 
 #include <vector>
 #include <RealEngine/Core/Export.h>
+#include <RealEngine/Core/ObjectHandling/RePtr.h>
+#include <RealEngine/Core/ReObject.h>
+#include <RealEngine/Core/Physics/QuadtreeNode.h>
+#include <thread>
 
-#include "QuadtreeNode.h"
 
 namespace Re
 {
-	class ReObject;
+	// class ReObject;
 
 	//TODO: All RePtr<ReObject> will change to RePtr<PhysicalComponent> or smth like that
 
@@ -20,6 +23,7 @@ namespace Re
 			~Quadtree();
 
 			void AddObject(const RePtr<ReObject> obj);
+			void RemoveObject(const RePtr<ReObject> obj);
 		
 			Quadtree& operator=(const Quadtree&) = delete;
 			Quadtree& operator=(Quadtree&&) = delete;
@@ -28,7 +32,7 @@ namespace Re
 			uint8_t m_maxObjectsPerNode;
 		
 			QuadtreeNode root;
-			std::thread m_rebuildThread;
+			// std::thread m_rebuildThread;
 
 #pragma region Rebuilding
 		public:
@@ -40,9 +44,10 @@ namespace Re
 		
 		private:
 			std::vector<RePtr<ReObject>> m_addedObjects;
-			bool m_wantsToRebuild;
-			bool m_isRebuilding;
-			bool m_isRootLocked;
+			std::vector<RePtr<ReObject>> m_removedObjects;
+			bool m_wantsToRebuild = false;
+			bool m_isRebuilding = false;
+			bool m_isRootLocked = false;
 #pragma endregion
 	};
 }

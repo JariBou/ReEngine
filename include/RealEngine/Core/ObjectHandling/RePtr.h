@@ -14,7 +14,7 @@ namespace Re
 		
 		public:
 		
-#pragma region Constructors
+		#pragma region Constructors
 			RePtr();
 			
 			explicit RePtr(T* object);
@@ -34,7 +34,7 @@ namespace Re
 			RePtr(const RePtr& other) = default;
 			RePtr(RePtr&& other) noexcept;
 			~RePtr();
-#pragma endregion
+		#pragma endregion
 
 			T* Get() const;
 		
@@ -51,7 +51,8 @@ namespace Re
 			void Reset(const RePtr& other);
 			void Reset(RePtr&& other);
 		
-#pragma region Operators
+		#pragma region Operators
+		
 			T* operator->() const;
 
 			// Not sure about these =======================
@@ -72,8 +73,28 @@ namespace Re
 		
 			RePtr& operator=(const RePtr& other);
 			RePtr& operator=(RePtr&& other) noexcept;
+			bool operator==(std::nullptr_t Null) const;
+		
+		#pragma endregion
 
-#pragma endregion
+		#pragma region Operator ==
+
+			bool operator==(RePtr& other) const;
+			bool operator!=(RePtr& other) const;
+			bool operator==(const RePtr& other) const;
+			bool operator!=(const RePtr& other) const;
+
+			template<DerivedFrom<T> U> bool operator==(RePtr<U>& other) const;
+			template<DerivedFrom<T> U> bool operator!=(RePtr<U>& other) const;
+			template<DerivedFrom<T> U> bool operator==(const RePtr<U>& other) const;
+			template<DerivedFrom<T> U> bool operator!=(const RePtr<U>& other) const;
+
+			template<BaseOf<T> U> bool operator==(RePtr<U>& other) const;
+			template<BaseOf<T> U> bool operator!=(RePtr<U>& other) const;
+			template<BaseOf<T> U> bool operator==(const RePtr<U>& other) const;
+			template<BaseOf<T> U> bool operator!=(const RePtr<U>& other) const;
+
+		#pragma endregion
 		
 		private:
 			std::shared_ptr<const ReHandleData> m_data;

@@ -4,6 +4,7 @@
 #include <SDL2/SDL_keycode.h>
 #include <RealEngine/Core/ReEngine.h>
 #include <RealEngine/Core/ReObject.h>
+#include <RealEngine/Core/Physics/Quadtree.h>
 
 #include "RealEngine/Core/Components/RCDisplayable.h"
 #include "RealEngine/Core/Components/RCSdlEventReceiver.h"
@@ -120,15 +121,21 @@ int main(int argc, char** argv) {
 	Re::RePtr<Re::ReObject> pTamere = engine.GetWorld()->InstantiateObject<Tamere>();
 	Re::RePtr<Tonpere> pTamere2 = Re::RePtr<Tonpere>(pTamere);
 
+	std::remove_reference<int>::type;
+
 	// Re::Shape* shape = new Re::Square(0, 0, 10, 10, Re::RGBA::Blue());
 
     for (auto element : pTamere->GetTags())
     {
 	    std::cout << element << "\n";
     }
-	pTamere->Destroy();
+	//pTamere->Destroy();
+
+	Re::Quadtree quadTree = Re::Quadtree(2);
+	quadTree.AddObject(pTamere);
 
 	Re::RePtr<Tonpere> pTonpere = engine.GetWorld()->InstantiateObject<Tonpere>(window, "Je suis un obj");
+	quadTree.AddObject(pTonpere);
 
 	if(pTamere.IsValid()) pTamere2->Print();
 

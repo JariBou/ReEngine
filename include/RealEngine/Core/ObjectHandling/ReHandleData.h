@@ -10,5 +10,10 @@ namespace Re
 		void* object;
 
 		static std::shared_ptr<ReHandleData> GetEmptyObject();
+
+		bool operator==(const ReHandleData& other) const
+		{
+			return other.object == object;
+		}
 	};
 }

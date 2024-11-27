@@ -2,12 +2,13 @@
 
 #include <vector>
 #include <RealEngine/Core/Export.h>
+#include <RealEngine/Core/ReObject.h>
 
 #include "RealEngine/Core/ObjectHandling/RePtr.h"
 
 namespace Re
 {
-	class ReObject;
+	// class ReObject;
 
 	class RE_CORE_API QuadtreeNode : public ReHandledObject<QuadtreeNode>
 	{
@@ -16,7 +17,7 @@ namespace Re
 			explicit QuadtreeNode(uint8_t maxObjectsPerNode);
 			QuadtreeNode(const QuadtreeNode& other);
 			QuadtreeNode(QuadtreeNode&& other) noexcept;
-			~QuadtreeNode() override = default;
+			~QuadtreeNode() override;
 
 			void TryMerge();
 			void DoMerge();
@@ -26,6 +27,7 @@ namespace Re
 			uint8_t GetChildrenNodesNumber() const;
 		
 			void AddObject(const RePtr<ReObject>& obj);
+			void RemoveObject(const RePtr<ReObject>& Re);
 		
 			QuadtreeNode& operator=(const QuadtreeNode& other);
 			QuadtreeNode& operator=(QuadtreeNode&& other) noexcept;
@@ -36,7 +38,8 @@ namespace Re
 			// Actually should be a physics comp but we don't have one yet
 			std::vector<RePtr<ReObject>> m_childrenObjects;
 			// std::shared_ptr because we want to easily copy another tree
-			std::vector<std::shared_ptr<QuadtreeNode>> m_childrenNodes;
+			// AHAH cant use shared otherwise the copy will modify the actual one
+			std::vector<QuadtreeNode*> m_childrenNodes;
 	};
 }
 
