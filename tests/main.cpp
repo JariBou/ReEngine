@@ -13,26 +13,26 @@
 #include "RealEngine/Renderer/Shapes/Square.h"
 
 
-class Tamere : public Re::ReObject {
+class Mom : public Re::ReObject {
 
 public:
 
-	Tamere(Re::ReEngine* engine) : ReObject(engine) {
-		SetTags({"Tameres", "Autre Tag"});
+	Mom(Re::ReEngine* engine) : ReObject(engine) {
+		SetTags({"A Tag", "Another Tag"});
 	}
 
 	void Print() {
-		std::cout << "tamere" << "\n";
+		std::cout << "Mom print" << "\n";
 	}
 };
 
-class Tonpere : public Re::ReObject{
+class Dad : public Re::ReObject{
 public:
 	
 
 	Re::Square square;
 
-	Tonpere(Re::ReEngine* engine, Re::WindowHandler* inWindow, const std::string& inText) : ReObject(engine), square(0, 0, 10, 10, Re::RGBA::Red()) {
+	Dad(Re::ReEngine* engine, Re::WindowHandler* inWindow, const std::string& inText) : ReObject(engine), square(0, 0, 10, 10, Re::RGBA::Red()) {
 		text = inText;
 		window = inWindow;
 	}
@@ -43,10 +43,10 @@ public:
 	void RegisterComponents(std::vector<Re::ReComponent*>& componentList) override
 	{
 		using namespace Re;
-		componentList.push_back(ReComponent::Create<RCTickable<Tonpere>>(this, &Tonpere::TickFunc));
+		componentList.push_back(ReComponent::Create<RCTickable<Dad>>(this, &Dad::TickFunc));
 		//componentList.push_back(new Re::RCTickable(this, &Tonpere::TickFunc));
 		
-		componentList.push_back(ReComponent::Create<RCDisplayable<Tonpere>>(this, &Tonpere::DisplayFunc));
+		componentList.push_back(ReComponent::Create<RCDisplayable<Dad>>(this, &Dad::DisplayFunc));
 		
 		//componentList.push_back(Re::ReComponent::Create<Re::RCSdlEventReceiver<Tonpere>>(this, &Tonpere::InputEventFunc));
 
@@ -118,28 +118,27 @@ int main(int argc, char** argv) {
 	Re::WindowHandler* window = engine.InitWindow(wi);
 	Re::Renderer* renderer = engine.GetRenderer();
 	
-	Re::RePtr<Re::ReObject> pTamere = engine.GetWorld()->InstantiateObject<Tamere>();
-	Re::RePtr<Tonpere> pTamere2 = Re::RePtr<Tonpere>(pTamere);
+	Re::RePtr<Re::ReObject> pMomAsObj = engine.GetWorld()->InstantiateObject<Mom>();
+	Re::RePtr<Dad> pDadFromMom = Re::RePtr<Dad>(pMomAsObj);
 
 	std::remove_reference<int>::type;
 
 	// Re::Shape* shape = new Re::Square(0, 0, 10, 10, Re::RGBA::Blue());
 
-    for (auto element : pTamere->GetTags())
+    for (auto element : pMomAsObj->GetTags())
     {
 	    std::cout << element << "\n";
     }
-	//pTamere->Destroy();
 
 	Re::Quadtree quadTree = Re::Quadtree(2);
-	quadTree.AddObject(pTamere);
+	quadTree.AddObject(pMomAsObj);
 
-	Re::RePtr<Tonpere> pTonpere = engine.GetWorld()->InstantiateObject<Tonpere>(window, "Je suis un obj");
-	quadTree.AddObject(pTonpere);
+	Re::RePtr<Dad> pDad = engine.GetWorld()->InstantiateObject<Dad>(window, "Text as constructor argument");
+	quadTree.AddObject(pDad);
 
-	if(pTamere.IsValid()) pTamere2->Print();
+	if(pMomAsObj.IsValid()) pDadFromMom->Print();
 
-	if (pTonpere.IsValid()) pTonpere->Print();
+	if (pDad.IsValid()) pDad->Print();
 
 	engine.Start();
 
