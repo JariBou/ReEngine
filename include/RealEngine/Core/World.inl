@@ -1,10 +1,9 @@
 #pragma once
-#include "IWorldObject.h"
 
 
 namespace Re
 {
-	template<Derived<IWorldObject> T, typename ...Args>
+	template<DerivedFrom<IWorldObject> T, typename ...Args>
 	RePtr<T> World::InstantiateObject(Args&&... objectParameters)
 	{
 		T* newObject = new T(m_engine, std::forward<Args>(objectParameters)...);

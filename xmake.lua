@@ -3,6 +3,27 @@ add_rules("mode.debug", "mode.release")
 set_languages("c++20")
 includes("xmake/**.lua")
 
+package("serializationlibrarygithub")
+    set_description("The serializationlibrarygithub package")
+
+    add_urls("https://github.com/JariBou/SerializationLibrary.git")
+    add_versions("1.0", "6be1e6951469bb159293320c5783699b1e8645ce")
+
+    on_install(function (package)
+        local configs = {}
+        if package:config("shared") then
+            configs.kind = "shared"
+        end
+        import("package.tools.xmake").install(package, configs)
+    end)
+
+    on_test(function (package)
+        -- TODO check includes and interfaces
+        -- assert(package:has_cfuncs("foo", {includes = "foo.h"})
+    end)
+package_end()
+
+add_requires("serializationlibrarygithub")
 add_requires("libsdl")
 add_defines("SDL_MAIN_HANDLED")
 
@@ -14,6 +35,7 @@ modules = {
     },
     Core = {
         Deps = {"RealEngineRenderer"},
+        Packages = {"serializationlibrarygithub"}
     }
 
 }

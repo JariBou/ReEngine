@@ -12,9 +12,6 @@ namespace Re
 	class ReComponent;
 	class IWorldObject;
 	
-	template<typename T, typename U>
-	concept Derived = std::is_base_of_v<U, T>;
-	
 	class RE_CORE_API World
 	{
 		public:
@@ -33,7 +30,7 @@ namespace Re
 
 #pragma region ObjectCreation
 
-		template<Derived<IWorldObject> T, typename... Args>
+		template<DerivedFrom<IWorldObject> T, typename... Args>
 		RePtr<T> InstantiateObject(Args&&... objectParameters);
 
 		IWorldObjectTemplate
