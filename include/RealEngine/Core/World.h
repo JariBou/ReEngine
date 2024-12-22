@@ -25,6 +25,12 @@ namespace Re
 			void Tick();
 			void RenderTick() const;
 
+			
+			/**
+			 * Should only be called from Engine (like a schedule world Reset)
+			 */
+			void ResetWorld();
+
 			World& operator=(const World&) = delete;
 			World& operator=(World&&) = delete;
 

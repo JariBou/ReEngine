@@ -38,6 +38,21 @@ namespace Re
         
     }
 
+    void World::ResetWorld()
+    {
+        for (auto& [object, componentList] : m_objectsMap)
+        {
+            for (ReComponent* component : componentList)
+            {
+                component->OnObjectDestroyed();
+                delete component;
+            }
+            object->OnObjectDestroyed();
+            delete object;
+        }
+        m_objectsMap.clear();
+    }
+
     void World::ScheduleObjectDestroy(ReObject* object)
     {
         if (m_objectGarbage.size() == m_objectGarbage.capacity()) m_objectGarbage.reserve(m_objectGarbage.capacity() * 2);

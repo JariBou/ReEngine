@@ -1,13 +1,12 @@
 #pragma once
 
 #include <RealEngine/Core/Export.h>
-#include <SerializationLib/SerializableObject.h>
 
 namespace Re
 {
 	class World;
 
-	class RE_CORE_API ReLevelBase : public Serialization::SerializableObject
+	class RE_CORE_API ReLevelBase
 	{
 		
 
@@ -25,10 +24,6 @@ namespace Re
 
 			ReLevelBase& operator=(const ReLevelBase&) = delete;
 			ReLevelBase& operator=(ReLevelBase&&) = delete;
-		
-		protected:
-			void OnSerialize(Serialization::Serializer* serializer) const override = 0;
-			void OnDeserialize(Serialization::Deserializer* deserializer) override = 0;
 		
 		private:
 			
